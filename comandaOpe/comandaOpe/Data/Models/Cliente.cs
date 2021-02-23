@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace comandaOpe.Data.Models
 {
-    [Table("Cliente")]
+    [Table("cliente")]
     public class Cliente: BaseEntitie
     {
-        public string Cpf { get; set; }
-        public string Nome { get; set; }
+        public string cpf { get; set; }
+        public string nome { get; set; }
   
   
     }

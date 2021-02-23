@@ -8,14 +8,14 @@ namespace comandaOpe.Data.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int id { get; set; }
         [Column(TypeName = "datetime2")]
-        public DateTime Criado { get; set; }
+        public DateTime criado { get; set; }
         [NotMapped]
         public string ErrorMessage { get; set; }
         public BaseEntitie()
         {
-            Criado = DateTime.Now;
+            criado = DateTime.Now;
         }
     }
 }

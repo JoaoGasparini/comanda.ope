@@ -2,11 +2,11 @@
 
 namespace comandaOpe.Data.Models
 {
-    [Table("Funcionario")]
+    [Table("funcionario")]
     public class Funcionario :BaseEntitie
     {
-        public string Nome { get; set; }
-        public string Cargo { get; set; }
+        public string nome { get; set; }
+        public string cargo { get; set; }
   
     }
 }

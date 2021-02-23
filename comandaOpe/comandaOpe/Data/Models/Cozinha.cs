@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace comandaOpe.Data.Models
 {
-    [Table("Cozinha")]
+    [Table("cozinha")]
     public class Cozinha:BaseEntitie
     {
-        public int Id_Pedido { get; set; }
+        public int id_pedido { get; set; }
         public bool status { get; set; }
     }
 }

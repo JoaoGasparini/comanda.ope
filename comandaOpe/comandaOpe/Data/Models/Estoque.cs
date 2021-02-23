@@ -2,11 +2,11 @@
 
 namespace comandaOpe.Data.Models
 {
-    [Table("Estoque")]
+    [Table("estoque")]
     public class Estoque:BaseEntitie
     {
-        public int Id_Produto { get; set; }
-        public int? Quantidade { get; set; }
+        public int id_produto { get; set; }
+        public int? quantidade { get; set; }
         
     }
 }

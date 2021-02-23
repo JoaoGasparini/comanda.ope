@@ -21,7 +21,7 @@ namespace comandaOpe.Data
                 dbSistemaComandaContext.Entry(entitie).State = Microsoft.EntityFrameworkCore.EntityState.Added;
                 dbSistemaComandaContext.SaveChanges();
 
-                id = entitie.Id;
+                id = entitie.id;
             }
             catch (Exception e)
             {
@@ -36,7 +36,6 @@ namespace comandaOpe.Data
             int id = 0;
             try
             {
-
                 dbSistemaComandaContext.Entry(entitie).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 id = dbSistemaComandaContext.SaveChanges();
 
@@ -67,7 +66,25 @@ namespace comandaOpe.Data
             try
             {
                 var listar = Listar();
-                return listar.Where(item => item.Id == id).FirstOrDefault();
+                return listar.Where(item => item.id == id).FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+        public int Remover(int id)
+        {
+            int Id = 0;
+            try
+            {
+                var buscar = Listar().Where(item => item.id == id).FirstOrDefault();
+                dbSistemaComandaContext.Remove<T>(buscar);
+
+                id = dbSistemaComandaContext.SaveChanges();
+
+                return Id;
             }
             catch (Exception e)
             {

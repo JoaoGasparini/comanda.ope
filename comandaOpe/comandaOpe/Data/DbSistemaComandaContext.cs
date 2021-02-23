@@ -14,7 +14,7 @@ namespace comandaOpe.Data
             builder.AddJsonFile("appsettings.json", optional: false);
 
             var configuration = builder.Build();
-            connectionString = configuration.GetConnectionString("SistemaComanda:connectionStrings").ToString();
+            connectionString = configuration.GetConnectionString("SistemaComandaConnection").ToString();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder)

@@ -2,17 +2,16 @@
 
 namespace comandaOpe.Data.Models
 {
-    [Table("Pedido")]
+    [Table("pedido")]
     public class Pedido:BaseEntitie
     {
-        public int Id_Comanda { get; set; }
-        public int Id_Funcionario { get; set; }
-		public int Id_Produto { get; set; }
-        public bool Status { get; set; }
-        public int Quantidade { get; set; }
-        public float Valor { get; set; }
-        public string Observacao { get; set; }
+        public int id_comanda { get; set; }
+        public int id_funcionario { get; set; }
+		public int id_produto { get; set; }
+        public bool status { get; set; }
+        public int quantidade { get; set; }
+        public float valor { get; set; }
+        public string observacao { get; set; }
 
-        
 	}
 }
