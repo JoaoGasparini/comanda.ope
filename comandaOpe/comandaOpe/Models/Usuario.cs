@@ -19,5 +19,9 @@ namespace comandaOpe.Models
         [Display(Name = "Email do usuário :")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Cargo do usuário :")]
+        public string Cargo { get; set; }
     }
 }

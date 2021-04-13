@@ -6,16 +6,16 @@ namespace comandaOpe.Models
 {
     public class Aunteticacao:IAutenticacao
     {
-        private readonly UsuarioModel usuarioModel;
+        private readonly FuncionarioModel funcionarioModel;
         public Aunteticacao()
         {
-            usuarioModel = new UsuarioModel();
+            funcionarioModel = new FuncionarioModel();
         }
         public bool ValidarLogin(Usuario usuario)
         {
             try
             {
-                var usuarioBanco = usuarioModel.Listar().Where(user => user.login == usuario.Login && user.senha == usuario.Senha).FirstOrDefault();
+                var usuarioBanco = funcionarioModel.Listar().Where(user => user.login == usuario.Login && user.senha == usuario.Senha).FirstOrDefault();
 
                 if (usuarioBanco != null) return true;
                 else return false;
@@ -31,21 +31,22 @@ namespace comandaOpe.Models
         {
             try
             {
-                var newUserData = new comandaOpe.Data.Models.Usuario()
+                var newUserData = new comandaOpe.Data.Models.Funcionario()
                 {
                     nome = novoUsuario.Nome,
                     email = novoUsuario.Email,
                     login = novoUsuario.Login,
-                    senha = novoUsuario.Senha
+                    senha = novoUsuario.Senha,
+                    cargo = novoUsuario.Cargo
                 };
 
-                var retorno = usuarioModel.Inserir(newUserData);
+                var retorno = funcionarioModel.Inserir(newUserData);
 
                 return "Registrado com sucesso";
             }
             catch (System.Exception e)
             {
-                var newUserError = new comandaOpe.Data.Models.Usuario() { ErrorMessage = e.InnerException.ToString()};
+                var newUserError = new comandaOpe.Data.Models.Funcionario() { ErrorMessage = e.InnerException.ToString()};
                 return "Error: " + newUserError.ErrorMessage;
             }
         }

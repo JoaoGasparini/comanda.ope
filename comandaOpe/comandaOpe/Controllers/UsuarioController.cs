@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using comandaOpe.Data;
 using comandaOpe.Data.Models;
 using System.Linq;
+using System.Collections.Generic;
+using System;
 
 namespace comandaOpe.Controllers
 {
@@ -50,20 +52,131 @@ namespace comandaOpe.Controllers
             return RedirectToAction("UsuarioLogin", "Login");
         }
 
-        //public IActionResult CriarComanda()
-        //{
-        //    DbSistemaComandaContext contexto = new DbSistemaComandaContext();
-        //    Pedido pedidoe = new Pedido();
-        //    pedidoe
-        //    ComandaModel comanda = new ComandaModel();
-        //    Comanda comandae = new Comanda();
-        //    comandae.id_cliente = new UsuarioModel().Listar().Where(p => p.login == "victor").FirstOrDefault().id;
-        //    comandae.forma_pagamento = Request.Form["formapagamento"];
-        //    comanda.Inserir(comandae);
+        #region PRODUTO
+
+        [HttpPost]
+        public IActionResult CadastrarProduto(List<Produto> ltProdutos)
+        {
+            try
+            {
+                ltProdutos.ForEach(produto => new ProdutoModel().Inserir(produto));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            return View(); //ALTERAR A VIEW CORRETA
+        }
 
 
-        //}
+
+        #endregion
+
+        #region CLIENTE
+
+        [HttpPost]
+        public IActionResult CadastrarCliente(Cliente cliente)
+        {
+            try
+            {
+                new ClienteModel().Inserir(cliente);
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+            return View();
+        }
+
+
+        #endregion
+
+        #region COMANDA
+
+        [HttpPost]
+        public IActionResult AbrirComanda(int idCliente, int numeroComanda, int idFunc)
+        {
+            try
+            {
+                Comanda comanda = new Comanda()
+                {
+                    numero_comanda = numeroComanda, // ADICIONAR
+                    id_funcionario = idFunc,
+                    id_cliente = idCliente,
+                    status = true
+                };
+                new ComandaModel().Inserir(comanda);
+
+            }
+
+            catch (Exception e)
+            {
+
+
+            }
+
+            return View();
+        }
+
+        [HttpPut]
+        public IActionResult FecharComanda(int numeroComanda, int idCliente)
+        {
+            try
+            {
+                ComandaModel comandaModel = new ComandaModel();
+
+                var fechandoComanda = comandaModel.Listar()
+                                .Where(comanda => comanda.status == true && comanda.numero_comanda == numeroComanda && comanda.id_cliente == idCliente).FirstOrDefault();
+
+                if (fechandoComanda != null)
+                {
+                    fechandoComanda.status = false;
+                    comandaModel.Alterar(fechandoComanda);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+
+            return View();
+        }
+
+        #endregion
+
+        #region COZINHA
+
+        [HttpGet]
+        public List<Pedido> ListarPedidos_NaoProntos()
+        {
+            var ltPedidosNaoProntos = new PedidoModel().Listar().Where(pedido => pedido.status == false).ToList();
+            return ltPedidosNaoProntos;
+        }
+
+        [HttpPut]
+        public IActionResult AlterarPedido_ProntoCozinha(Pedido pedido)
+        {
+            try
+            {
+                PedidoModel pedidoModel = new PedidoModel();
+
+                var alterarPedido = pedidoModel.Buscar(pedido.id);
+                pedido.status = true;
+
+                pedidoModel.Alterar(alterarPedido);
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+            return View();
+        }
+
+        #endregion
+
     }
-
-    
 }

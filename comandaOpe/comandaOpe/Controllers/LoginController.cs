@@ -59,6 +59,7 @@ namespace comandaOpe.Controllers
         {
             ModelState.Remove("Nome");
             ModelState.Remove("Email");
+            ModelState.Remove("Cargo");
 
             if (ModelState.IsValid)
             {
