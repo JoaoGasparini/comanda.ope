@@ -1,4 +1,26 @@
 ﻿@model Usuario
+<style>
+
+    body::after {
+        content: "";
+        background: url(../images/EB-Energy-Assets-Winter-2017-Foodservice-Article-Photo.jpg) no-repeat center center fixed;
+        opacity: 0.8;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+        background-size: cover;
+    }
+
+
+</style>
+
+
+
+
+
 <h2>Registrar</h2>
 <h4>Novo Usuário</h4>
 <hr />
@@ -8,9 +30,9 @@
         {
             <p class="alert alert-success">
                 @TempData["Sucesso"]
-            <a asp-action="LoginUsuario">Clique para fazer o login</a>
-        </p>
-    }
+                <a asp-action="LoginUsuario">Clique para fazer o login</a>
+            </p>
+        }
         @if (TempData["Falhou"] != null)
         {
             <p class="alert alert-danger">@TempData["Falhou"]</p>
