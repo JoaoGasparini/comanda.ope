@@ -74,79 +74,14 @@ namespace comandaOpe.Controllers
 
         #region CLIENTE
 
-        [HttpPost]
-        public IActionResult CadastrarCliente(Cliente cliente)
-        {
-            try
-            {
-                new ClienteModel().Inserir(cliente);
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
-            return View();
-        }
+        
 
 
         #endregion
 
-        #region COMANDA
+        
 
-        [HttpPost]
-        public IActionResult AbrirComanda(int idCliente, int numeroComanda, int idFunc)
-        {
-            try
-            {
-                Comanda comanda = new Comanda()
-                {
-                    numero_comanda = numeroComanda, // ADICIONAR
-                    id_funcionario = idFunc,
-                    id_cliente = idCliente,
-                    status = true
-                };
-                new ComandaModel().Inserir(comanda);
-
-            }
-
-            catch (Exception e)
-            {
-
-
-            }
-
-            return View();
-        }
-
-        [HttpPut]
-        public IActionResult FecharComanda(int numeroComanda, int idCliente)
-        {
-            try
-            {
-                ComandaModel comandaModel = new ComandaModel();
-
-                var fechandoComanda = comandaModel.Listar()
-                                .Where(comanda => comanda.status == true && comanda.numero_comanda == numeroComanda && comanda.id_cliente == idCliente).FirstOrDefault();
-
-                if (fechandoComanda != null)
-                {
-                    fechandoComanda.status = false;
-                    comandaModel.Alterar(fechandoComanda);
-                }
-
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
-
-            return View();
-        }
-
-        #endregion
-
+        
         #region COZINHA
 
         [HttpGet]

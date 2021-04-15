@@ -1,0 +1,35 @@
+﻿@model List<comandaOpe.Data.Models.Comanda>
+@{
+    ViewBag.Title = "Comandas";
+}
+
+<form method="post" asp-action="PegaCliente_AbrirComanda">
+    @if (TempData["cpfNaoCadastrado"] != null)
+    {
+        <p class="alert alert-danger">@TempData["cpfNaoCadastrado"]</p>
+    }
+
+    <input type="text" name="cpf" placeholder="Digite o CPF" />
+    <input type="text" name="numero_comanda" placeholder="Digite o numero da comanda" />
+
+    <input type="submit" name="enviar" value="Salvar" />
+</form>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Comandas Livres</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                
+                <td>@Html.Encode(item.numero_comanda)</td>
+
+            </tr>
+        }
+    <tbody>
+</table>
+
+

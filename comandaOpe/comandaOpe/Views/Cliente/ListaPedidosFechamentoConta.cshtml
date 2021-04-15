@@ -1,0 +1,50 @@
+﻿@model List<comandaOpe.Data.Models.Pedido>
+
+@using (Html.BeginForm("ListarPedidos", "Cliente", FormMethod.Get))
+{
+    <input type="text" name="numero_comanda" placeholder="Digite o numero da comanda" />
+
+    <input type="submit" name="enviar" value="Pesquisar" />
+}
+
+@if (Model != null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Produto</th>
+                <th scope="col">Valor Unitario</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Valor Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@Html.Encode(item.id_produto)</td>
+                        <td>@Html.Encode(item.valor)</td>
+                        <td>@Html.Encode(item.quantidade)</td>
+                        <td>@Html.Encode(item.total_pagar)</td>
+
+                    </tr>
+                }
+
+            <th scope="col">Total a pagar: R$ @Html.Encode(Model.Sum(pedido => pedido.total_pagar))</th>
+        }
+
+            </tbody>
+
+
+        </table>
+
+    <div>
+        Comanda Paga ?
+        <a asp-controller="Cliente" asp-action="FecharComanda"><input type="submit" name="Sim" value="Sim" /></a>
+        <input type="submit" name="Não" value="Não" />
+    </div>
+ }
+

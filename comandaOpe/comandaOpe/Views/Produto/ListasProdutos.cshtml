@@ -1,0 +1,37 @@
+﻿@model List<comandaOpe.Data.Models.Produto>
+
+
+<table class="table table-success table-striped">
+
+    @Html.ActionLink("Inserir Produto", "FormInserirProduto", "Produto")
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">DESCRIÇÃO</th>
+            <th scope="col">PREÇO</th>
+            <th scope="col">CATEGORIA</th>
+
+        </tr>
+    </thead>
+
+    @if(Model != null)
+    { 
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink("Editar", "FormEditarProduto", new { id = item.id })
+
+                        @Html.ActionLink("Remover", "RemoverProduto", new { id = item.id })
+                    </td>
+
+                    <td>@Html.Encode(item.descricao)</td>
+                    <td>@Html.Encode(item.preco)</td>
+                    <td>@Html.Encode(item.categoria)</td>
+
+                </tr>
+            }
+        </tbody>
+    }
+</table>

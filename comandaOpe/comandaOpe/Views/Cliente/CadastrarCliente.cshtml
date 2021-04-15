@@ -1,0 +1,41 @@
+﻿@model List<comandaOpe.Data.Models.Comanda>
+@{
+    ViewBag.Title = "Comanda";
+}
+
+@using (Html.BeginForm("CadastrarCliente", "Cliente", FormMethod.Get))
+{
+    @Html.AntiForgeryToken()
+
+    <input type="text" name="cpf" placeholder="Digite o CPF" />
+    <input type="text" name="nome" placeholder="Digite o nome" />
+    @if (TempData["comandaIndisponiveis"] != null)
+    {
+        <p class="alert alert-danger">@TempData["comandaIndisponiveis"]</p>
+    }
+
+    <input type = "text" name = "numero_comanda" placeholder = "Digite o numero da comanda" />
+
+    <input type = "submit" name = "enviar" value = "Salvar" />
+}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Comandas Livres</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@Html.Encode(item.numero_comanda)</td>
+
+                </tr>
+            }
+        }
+    <tbody>
+</table>
+
