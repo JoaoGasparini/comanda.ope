@@ -56,11 +56,19 @@ namespace comandaOpe.Controllers
 
         public IActionResult FormComanda()
         {
-            var ltComandasSemUso = new ComandaModel().Listar().Where(comanda => comanda.status == false).ToList();
+            try
+            {
+                var ltComandasSemUso = new ComandaModel().Listar().Where(comanda => comanda.status == false).ToList();
 
-            if (ltComandasSemUso.Count == 0) { TempData["comandaIndisponiveis"] = "Todas as comandas estão em uso."; }
+                if (ltComandasSemUso.Count == 0) { TempData["comandaIndisponiveis"] = "Todas as comandas estão em uso."; }
 
-            return View("AbrirComanda", ltComandasSemUso);
+                return View("AbrirComanda", ltComandasSemUso);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         [HttpPost]
@@ -68,6 +76,10 @@ namespace comandaOpe.Controllers
         {
             try
             {
+                var ltComandasSemUso = new ComandaModel().Listar().Where(comanda => comanda.status == false).ToList();
+
+                if (ltComandasSemUso.Count == 0) { TempData["comandaIndisponiveis"] = "Todas as comandas estão em uso."; }
+
                 var cliente = new ClienteModel().Listar().Where(cliente => cliente.cpf == cpf).ToList();
 
                 if (cliente.Count != 0)
@@ -80,6 +92,8 @@ namespace comandaOpe.Controllers
                 {
                     TempData["cpfNaoCadastrado"] = "CPF não encontrado, por favor cadastre para abrir uma comanda";
                 }
+
+                return View("AbrirComanda", ltComandasSemUso);
             }
             catch (Exception)
             {
