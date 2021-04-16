@@ -1,7 +1,6 @@
 ﻿using comandaOpe.Data;
 using comandaOpe.Data.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +17,7 @@ namespace comandaOpe.Controllers
         {
             var ltComandasSemUso = new ComandaModel().Listar().Where(comanda => comanda.status == false).ToList();
 
-            if(ltComandasSemUso != null) 
+            if (ltComandasSemUso == null)
             {
                 TempData["comandaIndisponiveis"] = "Todas as comandas estão em uso.";
                 return View("CadastrarCliente", ltComandasSemUso);
@@ -31,9 +30,9 @@ namespace comandaOpe.Controllers
         {
             try
             {
-                var pesquisaCpf = new ClienteModel().Listar().Where(cliente => cliente.cpf == cliente.cpf).FirstOrDefault();
-                
-                if (pesquisaCpf != null)
+                var pesquisaCpf = new ClienteModel().Listar().Where(cli => cliente.cpf == cli.cpf).FirstOrDefault();
+
+                if (pesquisaCpf == null)
                 {
                     int idCliente = new ClienteModel().Inserir(cliente);
 
@@ -42,7 +41,8 @@ namespace comandaOpe.Controllers
                     return View("Cliente");
                 }
                 else
-                {   
+                {
+                    AbrirComanda(pesquisaCpf.id, numero_comanda, 1);
                     return View("AbrirComanda");
                 }
             }
@@ -75,7 +75,7 @@ namespace comandaOpe.Controllers
 
                     AbrirComanda(idCliente, numero_comanda, 1);
                 }
-                else 
+                else
                 {
                     TempData["cpfNaoCadastrado"] = "CPF não encontrado, por favor cadastre para abrir uma comanda";
                     return View();
@@ -86,8 +86,8 @@ namespace comandaOpe.Controllers
 
                 throw;
             }
-            
-            return View();
+
+            return View("Cliente");
         }
 
         public void AbrirComanda(int idCliente, string numeroComanda, int idFunc)
@@ -143,7 +143,7 @@ namespace comandaOpe.Controllers
                 var comandaPedido = new Comanda_PedidoModel().Listar().Where(comanda => comanda.id_comanda_cliente == comandaCliente.id).FirstOrDefault();
 
                 ltPedidos = new PedidoModel().Listar().Where(pedido => pedido.id_comanda_pedido == comandaPedido.id).ToList();
-                foreach(var pedido in ltPedidos)
+                foreach (var pedido in ltPedidos)
                 {
                     pedido.total_pagar = (pedido.quantidade * pedido.valor);
                 }
@@ -153,19 +153,26 @@ namespace comandaOpe.Controllers
 
             return View("ListaPedidosFechamentoConta", ltPedidos);
         }
+
+        [HttpPost]
         public IActionResult FecharComanda(string numero_comanda)
         {
             try
             {
+                string valor = Response.ContentType;
+
                 int numeroComanda = Convert.ToInt32(numero_comanda);
 
                 var comanda = new ComandaModel().Listar().Where(comanda => comanda.numero_comanda == numeroComanda && comanda.status == true).FirstOrDefault();
                 comanda.status = false;
+
                 var comandaCliente = new Comanda_ClienteModel().Listar().Where(cCliente => cCliente.id_comanda == comanda.id && cCliente.status == true).FirstOrDefault();
                 comandaCliente.status = false;
 
                 new ComandaModel().Alterar(comanda);
                 new Comanda_ClienteModel().Alterar(comandaCliente);
+
+                TempData["Comanda Fechada"] = "Comanda fechada !";
 
             }
             catch (Exception e)
@@ -176,7 +183,48 @@ namespace comandaOpe.Controllers
 
             return View();
         }
+        public IActionResult FormNovaComanda()
+        {
+            try
+            {
+                var ltComandas = new ComandaModel().Listar().ToList();
 
+                return View("FormNovaComanda", ltComandas);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public IActionResult InserirNovaComanda(Comanda comanda)
+        {
+            List<Comanda> ltComandas = new List<Comanda>();
+            try
+            {
+                var inserirComanda = new ComandaModel().Inserir(comanda);
+
+                ltComandas = new ComandaModel().Listar().ToList();
+
+                return View("FormNovaComanda", ltComandas);
+            }
+            catch (Exception e)
+            {
+                var erro = e.InnerException.ToString();
+
+                if (erro.Contains("duplicate key value violates unique"))
+                {
+                    TempData["Falhou"] = "Numero de comanda ja foi cadastrado.";
+
+                };
+            }
+            ltComandas = new ComandaModel().Listar().ToList();
+
+            return View("FormNovaComanda", ltComandas);
+        }
     }
+
     #endregion
 }

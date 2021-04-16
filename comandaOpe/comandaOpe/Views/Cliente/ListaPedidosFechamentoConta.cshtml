@@ -1,10 +1,11 @@
 ﻿@model List<comandaOpe.Data.Models.Pedido>
 
+
 @using (Html.BeginForm("ListarPedidos", "Cliente", FormMethod.Get))
 {
     <input type="text" name="numero_comanda" placeholder="Digite o numero da comanda" />
-
-    <input type="submit" name="enviar" value="Pesquisar" />
+    
+    <input type = "submit" name = "enviar" value = "Pesquisar" />
 }
 
 @if (Model != null)
@@ -40,11 +41,13 @@
 
 
         </table>
-
-    <div>
-        Comanda Paga ?
-        <a asp-controller="Cliente" asp-action="FecharComanda"><input type="submit" name="Sim" value="Sim" /></a>
-        <input type="submit" name="Não" value="Não" />
-    </div>
- }
+        @using (Html.BeginForm("FecharComanda", "Cliente", FormMethod.Post))
+        {         <div>
+            Comanda Paga ?
+            <a asp-controller="Cliente" asp-action="FecharComanda" pos><input type="submit" name="Sim" value="Sim"/></a>
+            <input type="submit" name="Não" value="Não" />
+    
+            </div>
+            }
+        }
 

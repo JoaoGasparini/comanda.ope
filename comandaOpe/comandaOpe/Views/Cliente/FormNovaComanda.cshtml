@@ -1,0 +1,40 @@
+﻿@model List<comandaOpe.Data.Models.Comanda>
+
+@using (Html.BeginForm("InserirNovaComanda", "Cliente", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    
+    if(TempData["Falhou"] != null)
+    {
+        <p class="alert alert-danger">
+            @TempData["Falhou"]
+        </p>
+    }
+    <label for="preco" class="form-label">Digite o numero da comanda para adicionar: </label>
+    <input type="text" name="numero_comanda" />
+
+    <input type="submit" name="enviar" value="Salvar" />
+
+    if (Model != null)
+    {
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Comandas Existentes</th>
+                <th scope="col">Situação</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@Html.Encode(item.numero_comanda)</td>
+                    <td>@Html.Encode(item.status == true ? "Comanda em uso" : "Comanda Livre")</td>
+
+                </tr>
+            }
+        <tbody>
+    </table>
+    }
+ }
