@@ -10,7 +10,7 @@ namespace comandaOpe.Data.Models
 		public int id_produto { get; set; }
         public bool status { get; set; }
         public int quantidade { get; set; }
-        public float valor { get; set; }
+        public double valor { get; set; }
         public string observacao { get; set; }
         [NotMapped]
         public double total_pagar { get; set; }

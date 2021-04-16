@@ -4,8 +4,8 @@
 @using (Html.BeginForm("ListarPedidos", "Cliente", FormMethod.Get))
 {
     <input type="text" name="numero_comanda" placeholder="Digite o numero da comanda" />
-    
-    <input type = "submit" name = "enviar" value = "Pesquisar" />
+    <input type="submit" name="enviar" value="Pesquisar" />
+
 }
 
 @if (Model != null)
@@ -34,20 +34,24 @@
                     </tr>
                 }
 
-            <th scope="col">Total a pagar: R$ @Html.Encode(Model.Sum(pedido => pedido.total_pagar))</th>
-        }
+                <th scope="col">Total a pagar: R$ @Html.Encode(Model.Sum(pedido => pedido.total_pagar))</th>
+            }
 
             </tbody>
 
-
         </table>
-        @using (Html.BeginForm("FecharComanda", "Cliente", FormMethod.Post))
-        {         <div>
-            Comanda Paga ?
-            <a asp-controller="Cliente" asp-action="FecharComanda" pos><input type="submit" name="Sim" value="Sim"/></a>
-            <input type="submit" name="Não" value="Não" />
+        
+    @using (Html.BeginForm("FecharComanda", "Cliente", FormMethod.Post))
+    {
+        <div>
+        Comanda Paga ?
+        <a asp-controller="Cliente" asp-action="FecharComanda" pos><input type="submit" name="Sim" value="Sim" /></a>
+
+        @Html.Hidden("numero_comanda", Model.FirstOrDefault().id_comanda_pedido)
     
-            </div>
-            }
-        }
+        <input type="submit" name="Não" value="Não" />
+
+        </div>
+    }
+}
 

@@ -12,6 +12,11 @@
     <input type="text" name="cpf" placeholder="Digite o CPF" />
     <input type="text" name="numero_comanda" placeholder="Digite o numero da comanda" />
 
+    @if (TempData["comandaIndisponiveis"] != null)
+    {
+        <p class="alert alert-danger">@TempData["comandaIndisponiveis"]</p>
+    }
+
     <input type="submit" name="enviar" value="Salvar" />
 </form>
 <table class="table table-striped">
@@ -20,16 +25,21 @@
             <th scope="col">Comandas Livres</th>
         </tr>
     </thead>
+    
     <tbody>
-        @foreach (var item in Model)
+        @if (Model != null)
         {
-            <tr>
-                
-                <td>@Html.Encode(item.numero_comanda)</td>
+            @foreach (var item in Model)
+            {
+                <tr>
 
-            </tr>
+                    <td>@Html.Encode(item.numero_comanda)</td>
+
+                </tr>
+            }
         }
     <tbody>
+        
 </table>
 
 
