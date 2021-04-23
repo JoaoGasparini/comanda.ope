@@ -108,10 +108,13 @@ namespace comandaOpe.Controllers
         {
             try
             {
+
+                var idComanda = new ComandaModel().Listar().Where(comanda => comanda.numero_comanda == Convert.ToInt32(numeroComanda)).FirstOrDefault().id;
+
                 Comanda_Cliente comanda_cliente = new Comanda_Cliente()
                 {
                     id_cliente = idCliente,
-                    id_comanda = Convert.ToInt32(numeroComanda),
+                    id_comanda = idComanda,
                     status = true
                 };
 
