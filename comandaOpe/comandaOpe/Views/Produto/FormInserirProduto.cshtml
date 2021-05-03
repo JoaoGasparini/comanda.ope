@@ -1,20 +1,21 @@
 ﻿@model comandaOpe.Data.Models.Produto
 
 <form class="row g-3" method="post">
-    <div class="col-md-6">
+    <div class="col-md-8">
         <label for="nome" class="form-label">Nome</label>
         <input type="text" name="descricao" class="form-control" id="nome" placeholder="Insira o Nome">
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <label for="preco" class="form-label">Preço</label>
         <input type="number" name="preco" class="form-control" id="preco" placeholder="Insira o Valor">
     </div>
-    <div class="col-12">
+    <div class="col-12 mb-3">
         <label for="categoria" class="form-label">Categoria</label>
         <input type="text" name="categoria" class="form-control" id="categoria" placeholder="Qual a categoria?">
     </div>
 
-    <div class="col-12">
-        <button type="submit" class="btn btn-primary" asp-action="InserirProduto">Salvar</button>
+    <div class="col-md-12 m">
+        <button type="submit" class="btn btn-success" asp-action="InserirProduto">Salvar</button>
+        <button type="submit" class="btn btn-danger" asp-action="Produto">Voltar</button>
     </div>
 </form>

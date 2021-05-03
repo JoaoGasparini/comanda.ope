@@ -1,7 +1,6 @@
 ﻿@model List<comandaOpe.Data.Models.Produto>
 
-
-<table class="table table-success table-striped">
+<table class="table table-striped">
 
     @Html.ActionLink("Inserir Produto", "FormInserirProduto", "Produto")
     <thead>
@@ -10,7 +9,6 @@
             <th scope="col">DESCRIÇÃO</th>
             <th scope="col">PREÇO</th>
             <th scope="col">CATEGORIA</th>
-
         </tr>
     </thead>
 
@@ -19,18 +17,22 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.ActionLink("Editar", "FormEditarProduto", new { id = item.id })
+            <tr>
+                <td>
+                    <a asp-action="FormEditarProduto"><span class="fas fa-trash" value="@Html.Hidden("numero_comanda", item.id)"></span></a>
 
-                        @Html.ActionLink("Remover", "RemoverProduto", new { id = item.id })
-                    </td>
+                    <span>
+                        <i class="fas fa-trash"></i>
+                            @Html.ActionLink(".", "RemoverProduto", new { id = item.id })
+                        
+                    </span>
+                </td>
 
-                    <td>@Html.Encode(item.descricao)</td>
-                    <td>@Html.Encode(item.preco)</td>
-                    <td>@Html.Encode(item.categoria)</td>
-
-                </tr>
+                <td>@Html.Encode(item.descricao)</td>
+                <td>@Html.Encode(item.preco)</td>
+                <td>@Html.Encode(item.categoria)</td>
+                
+            </tr>
             }
         </tbody>
     }

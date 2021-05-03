@@ -1,13 +1,41 @@
-﻿@if(TempData["Falhou"] != null)
- {
+﻿@model List<comandaOpe.Data.Models.Comanda>
+
+
+@if (TempData["Falhou"] != null)
+{
     <p class="alert alert-danger">
         @TempData["ComandaFechada"]
     </p>
 }
 
-<body>
+
     <a asp-action="FormCliente"><button type="button"> Cadastrar Cliente </button></a>
     <a asp-action="FormNovaComanda"> <button type="button"> Inserir Nova Comanda </button></a>
     <a asp-action="FormComanda"> <button type="button"> Abrir Comanda </button></a>
-    <a asp-action="ListaPedidosFechamentoConta"> <button type="button"> Fechar Comanda </button></a>
-</body>
+    <a asp-action="ListaPedidosFechamentoConta"> <button type="button"> Fechar Comanda </button></a>    
+
+<div class="row">
+    <div class="col-md-6">
+        if (Model != null)
+        {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Comandas Existentes</th>
+                    <th scope="col">Situação</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@Html.Encode(item.numero_comanda)</td>
+                        <td>@Html.Encode(item.status == true ? "Comanda em uso" : "Comanda Livre")</td>
+
+                    </tr>
+                }
+            <tbody>
+        </table>
+    </div>
+</div>
