@@ -17,22 +17,19 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    <a asp-action="FormEditarProduto"><span class="fas fa-trash" value="@Html.Hidden("numero_comanda", item.id)"></span></a>
-
-                    <span>
-                        <i class="fas fa-trash"></i>
-                            @Html.ActionLink(".", "RemoverProduto", new { id = item.id })
-                        
-                    </span>
-                </td>
-
-                <td>@Html.Encode(item.descricao)</td>
-                <td>@Html.Encode(item.preco)</td>
-                <td>@Html.Encode(item.categoria)</td>
+                <tr>
+                    <td>
                 
-            </tr>
+                        @Html.ActionLink("Editar", "FormEditarProduto", new { id = item.id })
+                        @Html.ActionLink("Remover", "RemoverProduto", new { id = item.id })
+                
+                    </td>
+
+                    <td>@item.descricao</td>
+                    <td>@Html.Encode(item.preco)</td>
+                    <td>@Html.Encode(item.categoria)</td>
+
+                </tr>
             }
         </tbody>
     }

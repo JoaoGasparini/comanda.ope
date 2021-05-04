@@ -1,6 +1,5 @@
 ﻿@model List<comandaOpe.Data.Models.Comanda>
 
-
 @if (TempData["Falhou"] != null)
 {
     <p class="alert alert-danger">
@@ -8,34 +7,55 @@
     </p>
 }
 
+<div class="container">
+    <table class="table table-striped">
 
-    <a asp-action="FormCliente"><button type="button"> Cadastrar Cliente </button></a>
-    <a asp-action="FormNovaComanda"> <button type="button"> Inserir Nova Comanda </button></a>
-    <a asp-action="FormComanda"> <button type="button"> Abrir Comanda </button></a>
-    <a asp-action="ListaPedidosFechamentoConta"> <button type="button"> Fechar Comanda </button></a>    
-
-<div class="row">
-    <div class="col-md-6">
-        if (Model != null)
+        @Html.ActionLink("Inserir Comanda", "FormNovaComanda", "Cliente")
+        <thead>
+            <tr>
+                <th scope="col">COMANDAS LIVRES</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        
+        @if (Model != null)
         {
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Comandas Existentes</th>
-                    <th scope="col">Situação</th>
-                </tr>
-            </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-
-                        <td>@Html.Encode(item.numero_comanda)</td>
-                        <td>@Html.Encode(item.status == true ? "Comanda em uso" : "Comanda Livre")</td>
-
-                    </tr>
+                        @if (item.status == false)
+                        {
+                            <td>@item.numero_comanda</td>
+                            <td> @Html.ActionLink("Abrir Comanda", "FormCliente", new { comandaID = item.id }) </td>
+                        }
+                    </tr> 
                 }
-            <tbody>
-        </table>
-    </div>
+            </tbody>
+        }
+    </table>
+
+    <table class="table table-striped">
+        <thead>
+            <th scope="col">COMANDAS EM USO</th>
+            <th scope="col"></th>
+        </thead>
+
+            @if (Model != null)
+            { 
+                <tbody>
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                            @if (item.status == true)
+                            {
+                                <td> @item.numero_comanda</td>
+                                <td> @Html.ActionLink("Gerenciar Comanda", "ListarPedidos", new { comandaID = item.id }) </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+        
+             }
+    </table>
 </div>

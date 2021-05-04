@@ -78,7 +78,7 @@ namespace comandaOpe.Controllers
                     await HttpContext.SignInAsync(principal);
 
                     if (User.Identity.IsAuthenticated)
-                        return RedirectToAction("UsuarioHome", "Usuario");
+                        return RedirectToAction("Painel", "Usuario");
                     else
                     {
                         TempData["LoginUsuarioFalhou"] = "O login Falhou. Informe as credenciais corretas " + User.Identity.Name;

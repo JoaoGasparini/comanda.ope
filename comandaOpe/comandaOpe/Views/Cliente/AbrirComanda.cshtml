@@ -1,16 +1,25 @@
-﻿@model List<comandaOpe.Data.Models.Comanda>
+﻿@model comandaOpe.Data.Models.Comanda
 @{
     ViewBag.Title = "Comandas";
 }
 
-<form method="post" asp-action="PegaCliente_AbrirComanda">
+<form method="post" asp-action="CadastrarCliente">
     @if (TempData["cpfNaoCadastrado"] != null)
     {
         <p class="alert alert-danger">@TempData["cpfNaoCadastrado"]</p>
     }
+    <label for="nome" class="form-label">Nome:</label>
+    <input type="text" id="nome" name="nome" class="form-control" />
 
-    <input type="text" name="cpf" placeholder="Digite o CPF" />
-    <input type="text" name="numero_comanda" placeholder="Digite o numero da comanda" />
+    <label for="cpf" class="form-label">CPF: </label>
+    <input type="text" id="cpf" name="cpf" class="form-control" />
+
+    <label for="numero_comanda" class="form-label">Numero da Comanda: </label>
+    <input type="text" id="numero_comanda" name="numero_comanda" class="form-control" disabled="" value=@Model.numero_comanda />
+
+    <div class="col-12 mb-3">
+        <input name="comandaID" class="form-control" id="comandaID" hidden="hidden" value="@Html.Encode(Model.id)" />
+    </div>
 
     @if (TempData["comandaIndisponiveis"] != null)
     {
@@ -19,27 +28,3 @@
 
     <input type="submit" name="enviar" value="Salvar" />
 </form>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Comandas Livres</th>
-        </tr>
-    </thead>
-    
-    <tbody>
-        @if (Model != null)
-        {
-            @foreach (var item in Model)
-            {
-                <tr>
-
-                    <td>@Html.Encode(item.numero_comanda)</td>
-
-                </tr>
-            }
-        }
-    <tbody>
-        
-</table>
-
-

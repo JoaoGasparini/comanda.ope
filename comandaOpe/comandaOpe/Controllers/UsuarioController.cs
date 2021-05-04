@@ -15,31 +15,6 @@ namespace comandaOpe.Controllers
     [Authorize]
     public class UsuarioController : Controller
     {
-        #region teste movendo HOMECONTROLLE 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        #endregion
-
-
-        public IActionResult UsuarioHome()
-        {
-            return View();
-        }
-
         public IActionResult Painel()
         {
             return View("PainelAdm", "Usuario");
@@ -52,36 +27,13 @@ namespace comandaOpe.Controllers
             return RedirectToAction("UsuarioLogin", "Login");
         }
 
-        #region PRODUTO
-
-        [HttpPost]
-        public IActionResult CadastrarProduto(List<Produto> ltProdutos)
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
         {
-            try
-            {
-                ltProdutos.ForEach(produto => new ProdutoModel().Inserir(produto));
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            return View(); //ALTERAR A VIEW CORRETA
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
 
-
-        #endregion
-
-        #region CLIENTE
-
-        
-
-
-        #endregion
-
-        
-
-        
         #region COZINHA
 
         [HttpGet]

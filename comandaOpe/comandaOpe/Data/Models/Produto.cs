@@ -9,6 +9,7 @@ namespace comandaOpe.Data.Models
         public string descricao { get; set; }
         public double preco { get; set; }
         public string categoria { get; set; }
-        
+        [NotMapped]
+        public string id_comanda { get; set; }
     }
 }

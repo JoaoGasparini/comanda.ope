@@ -1,15 +1,12 @@
 ﻿@model List<comandaOpe.Data.Models.Pedido>
 
-
-@using (Html.BeginForm("ListarPedidos", "Cliente", FormMethod.Get))
-{
-    <input type="text" name="numero_comanda" placeholder="Digite o numero da comanda" />
-    <input type="submit" name="enviar" value="Pesquisar" />
-
-}
-
 @if (Model != null)
 {
+    <form method="post" asp-action="ListarProduto" asp-controller="Pedido">
+        <input name="id_comanda_pedido" id="id_comanda_pedido" hidden="hidden" value="@Model.FirstOrDefault().id_comanda_pedido"/>
+        <button type="submit"> Adicionar pedido a comanda </button>
+    </form>
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -24,34 +21,33 @@
             {
                 @foreach (var item in Model)
                 {
-                    <tr>
 
+                    <tr>
+                        <td name="id_comanda_pedido" hidden="hidden">@item.id_comanda_pedido</td>
                         <td>@Html.Encode(item.id_produto)</td>
                         <td>@Html.Encode(item.valor)</td>
                         <td>@Html.Encode(item.quantidade)</td>
                         <td>@Html.Encode(item.total_pagar)</td>
-
                     </tr>
                 }
 
-                <th scope="col">Total a pagar: R$ @Html.Encode(Model.Sum(pedido => pedido.total_pagar))</th>
-            }
+            <th scope="col">Total a pagar: R$ @Html.Encode(Model.Sum(pedido => pedido.total_pagar))</th>
+        }
 
             </tbody>
 
-        </table>
-        
-    @using (Html.BeginForm("FecharComanda", "Cliente", FormMethod.Post))
-    {
-        <div>
-        Comanda Paga ?
-        <a asp-controller="Cliente" asp-action="FecharComanda" pos><input type="submit" name="Sim" value="Sim" /></a>
+     </table>
 
-        @Html.Hidden("numero_comanda", Model.FirstOrDefault().id_comanda_pedido)
-    
-        <input type="submit" name="Não" value="Não" />
+        @using (Html.BeginForm("FecharComanda", "Cliente", FormMethod.Post))
+        {
+            <div>
+                Comanda Paga ?
+                <a asp-controller="Cliente" asp-action="FecharComanda" pos><input type="submit" name="Sim" value="Sim" /></a>
 
-        </div>
-    }
-}
+                @Html.Hidden("comanda_Pedido_Id", Model.FirstOrDefault().id_comanda_pedido)
+
+                <input type="submit" name="Não" value="Não" />
+            </div>
+        }
+ }
 

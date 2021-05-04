@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
-    <PackageReference Include="MaterialIcons" Version="1.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="5.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="5.0.3" />

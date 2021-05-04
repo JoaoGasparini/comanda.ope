@@ -1,0 +1,39 @@
+﻿@model List<IGrouping<string, comandaOpe.Data.Models.Produto>>
+
+@foreach (var categoria in Model)
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Categoria: @categoria.Key</th>
+            </tr>
+            <tr>
+                <th scope="col">Produto </th>
+                <th scope="col">Categoria </th>
+                <th scope="col">Valor </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in categoria)
+            {   
+                <form method="post" asp-action="InserirPedido" asp-controller="Pedido">
+                    <tr>
+                        <td>@item.descricao </td>
+                        <td>@item.categoria </td>
+                        <td> <name="valor" id="valor" value="@item.preco">@item.preco</td>
+
+                        <td><label for="quantidade">Quantidade: </label></td>
+
+                        <td><input type="number" id="quantidade" name="quantidade" min="1" /></td>
+                        <td><input name="valor" id="valor" hidden="hidden" value="@item.preco"/></td>
+                        <td><input name="produtoID" id="produtoID" hidden="hidden" value="@Html.Encode(item.id)"/></td>
+                        <td><input name="id_comanda_pedido" id="id_comanda_pedido" hidden="hidden" value="@Html.Encode(item.id_comanda)" /></td>
+
+                        <td><button type="submit" value="Adicionar">Adicionar</button></td>
+                    </tr>
+                </form>
+            }
+        </tbody>
+    </table>
+}

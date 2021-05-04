@@ -9,41 +9,69 @@ namespace comandaOpe.Controllers
 {
     public class ClienteController : Controller
     {
+        #region CLIENTE
         public IActionResult Cliente()
-        {
-            return View("Cliente");
-        }
-        public ViewResult FormCliente()
-        {
-            var ltComandasSemUso = new ComandaModel().Listar().Where(comanda => comanda.status == false).ToList();
-
-            if (ltComandasSemUso == null)
-            {
-                TempData["comandaIndisponiveis"] = "Todas as comandas estão em uso.";
-            }
-
-            return View("CadastrarCliente", ltComandasSemUso);
-        }
-
-        public ViewResult CadastrarCliente(Cliente cliente, string numero_comanda)
         {
             try
             {
-                var pesquisaCpf = new ClienteModel().Listar().Where(cli => cliente.cpf == cli.cpf).FirstOrDefault();
+                var ltComandas = new ComandaModel().Listar().OrderBy(comanda => comanda.status).OrderBy(comanda => comanda.numero_comanda).ToList();
 
-                if (pesquisaCpf == null)
+                //if (ltComandasSemUso == null)
+                //{
+                //    TempData["comandaIndisponiveis"] = "Todas as comandas estão em uso.";
+                //}
+
+                return View("Cliente", ltComandas);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public ViewResult FormCliente(string comandaID)
+        {
+            try
+            {
+                var idInt = Convert.ToInt32(comandaID);
+                var ltComanda = new ComandaModel().Listar().Where(comanda => comanda.id == idInt);
+                Comanda comanda = new Comanda();
+
+                if (ltComanda != null)
+                {
+                    comanda = ltComanda.FirstOrDefault();
+                }
+
+                return View("AbrirComanda", comanda);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult CadastrarCliente(Cliente cliente, string comandaID)
+        {
+            try
+            {
+                int idComanda = Convert.ToInt32(comandaID);
+                var pesquisaCpf = new ClienteModel().Listar().Where(cli => cliente.cpf == cli.cpf);
+
+                if (pesquisaCpf.Count() == 0)
                 {
                     int idCliente = new ClienteModel().Inserir(cliente);
 
-                    AbrirComanda(idCliente, numero_comanda, 1);
+                    AbrirComanda(idCliente, idComanda, 1);
 
-                    return View("Cliente");
                 }
-                else
-                {
-                    AbrirComanda(pesquisaCpf.id, numero_comanda, 1);
-                    return View("AbrirComanda");
-                }
+                else { AbrirComanda(pesquisaCpf.FirstOrDefault().id, idComanda, 1); }
+
+                return RedirectToAction("Cliente");
             }
             catch (Exception)
             {
@@ -51,6 +79,7 @@ namespace comandaOpe.Controllers
                 throw;
             }
         }
+        #endregion
 
         #region COMANDA
 
@@ -86,7 +115,7 @@ namespace comandaOpe.Controllers
                 {
                     var idCliente = cliente.FirstOrDefault().id;
 
-                    AbrirComanda(idCliente, numero_comanda, 1);
+                    //AbrirComanda(idCliente, numero_comanda, 1);
                 }
                 else
                 {
@@ -104,13 +133,10 @@ namespace comandaOpe.Controllers
             return View("AbrirComanda");
         }
 
-        public void AbrirComanda(int idCliente, string numeroComanda, int idFunc)
+        public void AbrirComanda(int idCliente, int idComanda, int idFunc)
         {
             try
             {
-
-                var idComanda = new ComandaModel().Listar().Where(comanda => comanda.numero_comanda == Convert.ToInt32(numeroComanda)).FirstOrDefault().id;
-
                 Comanda_Cliente comanda_cliente = new Comanda_Cliente()
                 {
                     id_cliente = idCliente,
@@ -128,7 +154,7 @@ namespace comandaOpe.Controllers
 
                 new Comanda_PedidoModel().Inserir(comanda_pedido);
 
-                var alterarStatusComanda = new ComandaModel().Listar().Where(comanda => comanda.numero_comanda == Convert.ToInt32(numeroComanda)).FirstOrDefault();
+                var alterarStatusComanda = new ComandaModel().Listar().Where(comanda => comanda.id == idComanda).FirstOrDefault();
                 alterarStatusComanda.status = true;
 
                 new ComandaModel().Alterar(alterarStatusComanda);
@@ -140,21 +166,16 @@ namespace comandaOpe.Controllers
 
             }
         }
-        public IActionResult ListaPedidosFechamentoConta()
-        {
-            return View("ListaPedidosFechamentoConta");
-        }
 
-        public ActionResult ListarPedidos(string numero_comanda)
+
+        public ActionResult ListarPedidos(string comandaID)
         {
             List<Pedido> ltPedidos = new List<Pedido>();
             try
             {
-                int numeroComandaInt = Convert.ToInt32(numero_comanda);
+                int idComanda = Convert.ToInt32(comandaID);
 
-                var comanda = new ComandaModel().Listar().Where(comanda => comanda.numero_comanda == numeroComandaInt && comanda.status == true).FirstOrDefault();
-
-                var comandaCliente = new Comanda_ClienteModel().Listar().Where(cCliente => cCliente.id_comanda == comanda.id && cCliente.status == true).FirstOrDefault();
+                var comandaCliente = new Comanda_ClienteModel().Listar().Where(cCliente => cCliente.id_comanda == idComanda && cCliente.status == true).FirstOrDefault();
 
                 var comandaPedido = new Comanda_PedidoModel().Listar().Where(comanda => comanda.id_comanda_cliente == comandaCliente.id).FirstOrDefault();
 
@@ -170,11 +191,11 @@ namespace comandaOpe.Controllers
                 {
                     var pedido = new Pedido()
                     {
-                        id_comanda_pedido = numeroComandaInt
+                        id_comanda_pedido = comandaPedido.id
+                        
                     };
 
                     ltPedidos.Add(pedido);
-
                 }
 
                 return View("ListaPedidosFechamentoConta", ltPedidos);
@@ -187,24 +208,28 @@ namespace comandaOpe.Controllers
             return View("ListaPedidosFechamentoConta", ltPedidos);
         }
 
+
         [HttpPost]
-        public IActionResult FecharComanda(string numero_comanda)
+        public IActionResult FecharComanda(string comanda_Pedido_Id)
         {
             try
             {
-                 int numeroComanda = Convert.ToInt32(numero_comanda);
 
-                var comanda = new ComandaModel().Listar().Where(comanda => comanda.numero_comanda == numeroComanda && comanda.status == true).FirstOrDefault();
-                comanda.status = false;
+                var comandaPedido = new Comanda_PedidoModel().Listar().Where(cPedido => cPedido.id == Convert.ToInt32(comanda_Pedido_Id));
+                
+                if(comandaPedido.Count() != 0)
+                {
+                    var comandaCliente = new Comanda_ClienteModel().Listar().Where(cCliente => cCliente.id == comandaPedido.FirstOrDefault().id_comanda_cliente).FirstOrDefault();
+                    comandaCliente.status = false;
 
-                var comandaCliente = new Comanda_ClienteModel().Listar().Where(cCliente => cCliente.id_comanda == comanda.id && cCliente.status == true).FirstOrDefault();
-                comandaCliente.status = false;
+                    var comanda = new ComandaModel().Listar().Where(comanda => comanda.id == comandaCliente.id_comanda && comanda.status == true).FirstOrDefault();
+                    comanda.status = false;
 
-                new ComandaModel().Alterar(comanda);
-                new Comanda_ClienteModel().Alterar(comandaCliente);
+                    new ComandaModel().Alterar(comanda);
+                    new Comanda_ClienteModel().Alterar(comandaCliente);
 
-                TempData["ComandaFechada"] = "Comanda fechada com sucesso!";
-
+                    TempData["ComandaFechada"] = "Comanda fechada com sucesso!";
+                }
             }
 
             catch (Exception e)
@@ -213,7 +238,7 @@ namespace comandaOpe.Controllers
                 throw e;
             }
 
-            return View("Cliente");
+            return RedirectToAction("Cliente");
         }
         public IActionResult FormNovaComanda()
         {
