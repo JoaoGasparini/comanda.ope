@@ -8,54 +8,60 @@
 }
 
 <div class="container">
-    <table class="table table-striped">
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-striped">
 
-        @Html.ActionLink("Inserir Comanda", "FormNovaComanda", "Cliente")
-        <thead>
-            <tr>
-                <th scope="col">COMANDAS LIVRES</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        
-        @if (Model != null)
-        {
-            <tbody>
-                @foreach (var item in Model)
-                {
+                @Html.ActionLink("Inserir Comanda", "FormNovaComanda", "Cliente")
+                <thead>
                     <tr>
-                        @if (item.status == false)
+                        <th scope="col">COMANDAS LIVRES</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+
+                @if (Model != null)
+                {
+                    <tbody>
+                        @foreach (var item in Model)
                         {
-                            <td>@item.numero_comanda</td>
-                            <td> @Html.ActionLink("Abrir Comanda", "FormCliente", new { comandaID = item.id }) </td>
+                            <tr>
+                                @if (item.status == false)
+                                {
+                                    <td>@item.numero_comanda</td>
+                                    <td> @Html.ActionLink("Abrir Comanda", "FormCliente", new { comandaID = item.id }) </td>
+                                }
+                            </tr>
+
                         }
-                    </tr> 
+                    </tbody>
                 }
-            </tbody>
-        }
-    </table>
+            </table>
+        </div>
+        <div class="col-md-6 mt-4">
+            <table class="table table-striped">
+                <thead>
+                <th scope="col">COMANDAS EM USO</th>
+                <th scope="col"></th>
+                </thead>
 
-    <table class="table table-striped">
-        <thead>
-            <th scope="col">COMANDAS EM USO</th>
-            <th scope="col"></th>
-        </thead>
+                @if (Model != null)
+                {
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                @if (item.status == true)
+                                {
+                                    <td> @item.numero_comanda</td>
+                                    <td> @Html.ActionLink("Gerenciar Comanda", "ListarPedidos", new { comandaID = item.id }) </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
 
-            @if (Model != null)
-            { 
-                <tbody>
-                    @foreach(var item in Model)
-                    {
-                        <tr>
-                            @if (item.status == true)
-                            {
-                                <td> @item.numero_comanda</td>
-                                <td> @Html.ActionLink("Gerenciar Comanda", "ListarPedidos", new { comandaID = item.id }) </td>
-                            }
-                        </tr>
-                    }
-                </tbody>
-        
-             }
-    </table>
+                }
+            </table>
+        </div>
+    </div>
 </div>

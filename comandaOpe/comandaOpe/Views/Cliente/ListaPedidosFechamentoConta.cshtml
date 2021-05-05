@@ -4,7 +4,7 @@
 {
     <form method="post" asp-action="ListarProduto" asp-controller="Pedido">
         <input name="id_comanda_pedido" id="id_comanda_pedido" hidden="hidden" value="@Model.FirstOrDefault().id_comanda_pedido"/>
-        <button type="submit"> Adicionar pedido a comanda </button>
+        <button class="btn btn-success" type="submit"> Adicionar pedido a comanda </button>
     </form>
 
     <table class="table table-striped">

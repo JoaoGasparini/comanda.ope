@@ -3,18 +3,18 @@
     <form class="row g-3" method="post">
         <div class="col-md-8">
             <label for="nome" class="form-label">Nome</label>
-            <input type="text" name="descricao" class="form-control" id="nome" value="@Html.Encode(Model.descricao)">
+            <input type="text" name="descricao" class="form-control" id="nome" value="@Model.descricao">
         </div>
         <div class="col-md-4">
             <label for="preco" class="form-label">Preço</label>
-            <input type="number" name="preco" class="form-control" id="preco" value="@Html.Encode(Model.preco)">
+            <input type="number" name="preco" class="form-control" id="preco" value="@Model.preco">
         </div>
         <div class="col-12">
             <label for="categoria" class="form-label">Categoria</label>
-            <input type="text" name="categoria" class="form-control" id="categoria" value="@Html.Encode(Model.categoria)">
+            <input type="text" name="categoria" class="form-control" id="categoria" value="@Model.categoria">
         </div>
         <div class="col-12 mb-3">
-            <input name="id" class="form-control" id="id" hidden="hidden" value="@Html.Encode(Model.id)" />
+            <input name="id" class="form-control" id="id" hidden="hidden" value="@Model.id" />
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-success" asp-action="EditarProduto">Salvar</button>

@@ -1,33 +1,44 @@
 ﻿@model List<comandaOpe.Data.Models.Produto>
 
+<h2 class="align-items-center mb-3">Produtos</h2>
 <table class="table table-striped">
+    
+    <form method="post" asp-action="FormInserirProduto" asp-controller="Produto">
+        <button class="btn btn-success" type="submit"> <i class="fas fa-plus-circle"></i> </button>
+    </form>
 
-    @Html.ActionLink("Inserir Produto", "FormInserirProduto", "Produto")
     <thead>
         <tr>
-            <th scope="col"></th>
+            <th scope="col">EDITAR</th>
+            <th scope="col">EXCLUIR</th>
             <th scope="col">DESCRIÇÃO</th>
             <th scope="col">PREÇO</th>
             <th scope="col">CATEGORIA</th>
         </tr>
     </thead>
 
-    @if(Model != null)
-    { 
+    @if (Model != null)
+    {
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
                     <td>
-                
-                        @Html.ActionLink("Editar", "FormEditarProduto", new { id = item.id })
-                        @Html.ActionLink("Remover", "RemoverProduto", new { id = item.id })
-                
+                        <form method="post" asp-action="FormEditarProduto" asp-controller="Produto">
+                            <input name="id_produto" id="id_produto" hidden="hidden" value="@item.id" />
+                            <button class="btn btn-primary" type="submit"> <i class="fas fa-edit"></i> </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" asp-action="RemoverProduto" asp-controller="Produto">
+                            <input name="id_produto" id="id_produto" hidden="hidden" value="@item.id" />
+                            <button class="btn btn-danger" type="submit"> <i class="fas fa-trash-alt"></i> </button>
+                        </form>
                     </td>
 
                     <td>@item.descricao</td>
-                    <td>@Html.Encode(item.preco)</td>
-                    <td>@Html.Encode(item.categoria)</td>
+                    <td>@item.preco</td>
+                    <td>@item.categoria</td>
 
                 </tr>
             }

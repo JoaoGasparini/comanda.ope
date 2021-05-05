@@ -47,14 +47,14 @@ namespace comandaOpe.Controllers
             if (ltProduto != null) return View("ListasProdutos", ltProduto);
             else return View("ListasProdutos");
         }
-        [HttpGet]
-        public IActionResult FormEditarProduto(string id)
+        [HttpPost]
+        public IActionResult FormEditarProduto(string id_produto)
         {
             Produto produtoEditavel = new Produto();
 
             try
             {
-                produtoEditavel = new ProdutoModel().Buscar(Convert.ToInt32(id));
+                produtoEditavel = new ProdutoModel().Buscar(Convert.ToInt32(id_produto));
 
             }
             catch (Exception e)
@@ -89,11 +89,11 @@ namespace comandaOpe.Controllers
                 throw;
             }
         }
-        public IActionResult RemoverProduto(string id)
+        public IActionResult RemoverProduto(string id_produto)
         {
             try
             {
-                new ProdutoModel().Remover(Convert.ToInt32(id));
+                new ProdutoModel().Remover(Convert.ToInt32(id_produto));
 
                 List<Produto> ltProduto = new ProdutoModel().Listar().ToList();
 
