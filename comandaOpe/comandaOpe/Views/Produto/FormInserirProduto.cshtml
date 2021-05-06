@@ -1,5 +1,18 @@
 ﻿@model comandaOpe.Data.Models.Produto
 
+@if (TempData["Falha"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Falha"]
+    </div>
+}
+@if (TempData["Sucesso"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Sucesso"]
+    </div>
+}
+
 <form class="row g-3" method="post">
     <div class="col-md-8">
         <label for="nome" class="form-label">Nome</label>

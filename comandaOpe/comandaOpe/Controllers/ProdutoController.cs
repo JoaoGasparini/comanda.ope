@@ -9,17 +9,10 @@ namespace comandaOpe.Controllers
 {
     public class ProdutoController : Controller
     {
-        private List<Produto> ltProduto;
-
-        public ProdutoController()
-        {
-            ltProduto = new List<Produto>();
-        }
-
         #region Produto
         public IActionResult Produto()
         {
-            ltProduto = new ProdutoModel().Listar().ToList();
+            var ltProduto = new ProdutoModel().Listar().ToList();
 
             if (ltProduto != null) return View("ListasProdutos", ltProduto);
 
@@ -35,38 +28,40 @@ namespace comandaOpe.Controllers
         {
             try
             {
-                new ProdutoModel().Inserir(produto);
-                ltProduto = new ProdutoModel().Listar().ToList();
+                var retorno = new ProdutoModel().Inserir(produto);
 
+                if (retorno != 0) { TempData["Sucesso"] = "Produto foi adicionado ao catálogo com sucesso"; }
+                else { TempData["Falha"] = "Erro ao inserir o produto no catálogo"; }
             }
             catch (Exception e)
             {
-
-                throw;
+                TempData["Falha"] = "Erro: " + e.Message;
             }
-            if (ltProduto != null) return View("ListasProdutos", ltProduto);
-            else return View("ListasProdutos");
+
+            return RedirectToAction("FormInserirProduto");
         }
+
         [HttpPost]
         public IActionResult FormEditarProduto(string id_produto)
         {
-            Produto produtoEditavel = new Produto();
-
             try
             {
-                produtoEditavel = new ProdutoModel().Buscar(Convert.ToInt32(id_produto));
+                Produto produtoEditavel = new ProdutoModel().Buscar(Convert.ToInt32(id_produto));
+                
+                if (produtoEditavel != null) { return View("FormEditarProduto", produtoEditavel); }
+                else{ throw new Exception("Erro ao carregar o Produto" ); }
 
             }
             catch (Exception e)
             {
-                throw;
+                TempData["Falha"] = "Erro ao carregar produto: " + e.Message;
+
+                return RedirectToAction("Produto");
             }
-            
-            return View("FormEditarProduto", produtoEditavel);
         }
 
         [HttpPost]
-        public IActionResult EditarProduto(Produto produto, string id)
+        public IActionResult EditarProduto(Produto produto)
         {
             try
             {
@@ -76,34 +71,47 @@ namespace comandaOpe.Controllers
                 produtoEditavel.preco = produto.preco;
                 produtoEditavel.categoria = produto.categoria;
 
-                new ProdutoModel().Alterar(produtoEditavel);
+                var retorno = new ProdutoModel().Alterar(produtoEditavel);
 
-                List<Produto> ltProduto = new ProdutoModel().Listar().ToList();
+                if (retorno != 0)
+                {
+                    TempData["Sucesso"] = "Produto editado com sucesso !";
+                }
+                else
+                {
+                    TempData["Falha"] = "Falha ao editar o produto !";
+                    return RedirectToAction("Produto");
+                }
 
-                if (ltProduto != null) return View("ListasProdutos", ltProduto);
-                else return View("ListasProdutos");
+                return RedirectToAction("Produto");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                TempData["Falha"] = "Falha ao editar o produto ! Erro: " + e.Message;
+                return RedirectToAction("Produto");
             }
         }
         public IActionResult RemoverProduto(string id_produto)
         {
             try
             {
-                new ProdutoModel().Remover(Convert.ToInt32(id_produto));
+                var retorno = new ProdutoModel().Remover(Convert.ToInt32(id_produto));
 
-                List<Produto> ltProduto = new ProdutoModel().Listar().ToList();
+                if (retorno)
+                {
+                    TempData["Sucesso"] = "Produto removido com sucesso !";
+                }
+                else
+                {
+                    TempData["Falha"] = "Falha ao remover o produto.";
+                }
 
-                if (ltProduto != null) return View("ListasProdutos", ltProduto);
-                else return View("ListasProdutos");
+                return RedirectToAction("Produto");
             }
             catch (Exception e)
             {
-
-                throw;
+                TempData["Falha"] = "Falha ao editar o produto ! Erro: " + e.Message;
+                return RedirectToAction("Produto");
             }
         }
         

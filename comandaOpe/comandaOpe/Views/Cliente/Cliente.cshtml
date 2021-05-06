@@ -1,10 +1,16 @@
 ﻿@model List<comandaOpe.Data.Models.Comanda>
 
-@if (TempData["Falhou"] != null)
+@if (TempData["Falha"] != null)
 {
     <p class="alert alert-danger">
         @TempData["ComandaFechada"]
     </p>
+}
+@if (TempData["Sucesso"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Sucesso"]
+    </div>
 }
 
 <div class="container">

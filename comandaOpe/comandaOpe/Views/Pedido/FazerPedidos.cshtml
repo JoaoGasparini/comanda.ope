@@ -1,5 +1,18 @@
 ﻿@model List<IGrouping<string, comandaOpe.Data.Models.Produto>>
 
+@if (TempData["Falha"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Falha"]
+    </div>
+}
+@if (TempData["Sucesso"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Sucesso"]
+    </div>
+}
+
 @foreach (var categoria in Model)
 {
     <table class="table table-striped table-hover">
@@ -16,18 +29,18 @@
 
         <tbody>
             @foreach (var item in categoria)
-            {   
+            {
                 <form method="post" asp-action="InserirPedido" asp-controller="Pedido">
                     <tr>
                         <td>@item.descricao </td>
                         <td>@item.categoria </td>
-                        <td> <name="valor" id="valor" value="@item.preco">@item.preco</td>
+                        <td> <name ="valor" id="valor" value="@item.preco">@item.preco</td>
 
                         <td><label for="quantidade">Quantidade: </label></td>
 
                         <td><input type="number" id="quantidade" name="quantidade" min="1" /></td>
-                        <td><input name="valor" id="valor" hidden="hidden" value="@item.preco"/></td>
-                        <td><input name="produtoID" id="produtoID" hidden="hidden" value="@Html.Encode(item.id)"/></td>
+                        <td><input name="valor" id="valor" hidden="hidden" value="@item.preco" /></td>
+                        <td><input name="produtoID" id="produtoID" hidden="hidden" value="@Html.Encode(item.id)" /></td>
                         <td><input name="id_comanda_pedido" id="id_comanda_pedido" hidden="hidden" value="@Html.Encode(item.id_comanda)" /></td>
 
                         <td><button type="submit" value="Adicionar">Adicionar</button></td>

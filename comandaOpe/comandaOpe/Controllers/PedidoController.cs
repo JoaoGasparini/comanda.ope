@@ -8,6 +8,8 @@ namespace comandaOpe.Controllers
 {
     public class PedidoController : Controller
     {
+        #region Pedido
+
         [HttpGet]
         public IActionResult ListarProdutos(string id_comanda_pedido)
         {
@@ -45,35 +47,40 @@ namespace comandaOpe.Controllers
                 throw;
             }
         }
+
         [HttpPost]
         public IActionResult InserirPedido(string quantidade, string id_comanda_pedido, string produtoID, string valor)
         {
             try
             {
+                var produto = new ProdutoModel().Buscar(Convert.ToInt32(produtoID));
+
                 var intComandaID = Convert.ToInt32(id_comanda_pedido);
-                var intProdutoID = Convert.ToInt32(produtoID);
                 var intQuantidade = Convert.ToInt32(quantidade);
                 var doubleValor = Convert.ToDouble(valor);
 
                 var novoPedido = new Pedido()
                 {
                     id_comanda_pedido = intComandaID,
-                    id_produto = intProdutoID,
+                    descricao_produto = produto.descricao,
                     quantidade = intQuantidade,
-                    valor = intQuantidade * doubleValor,
+                    valor = intQuantidade,
                     status = true
                 };
 
-                new PedidoModel().Inserir(novoPedido);
+                var retorno = new PedidoModel().Inserir(novoPedido);
 
-                return RedirectToAction("ListarProdutos", new { id_comanda_pedido = id_comanda_pedido });
+                if (retorno != 0) { TempData["Sucesso"] = "Pedido inserido na comanda"; }
+                else { TempData["Falha"] = "Erro ao inserir pedido na comanda"; }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                TempData["Falha"] = "Erro ao inserir pedido na comanda: " + e.Message; 
             }
-            
+
+            return RedirectToAction("ListarProdutos", new { id_comanda_pedido = id_comanda_pedido });
         }
+
+        #endregion
     }
 }

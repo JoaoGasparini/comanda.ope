@@ -21,10 +21,9 @@
             {
                 @foreach (var item in Model)
                 {
-
                     <tr>
                         <td name="id_comanda_pedido" hidden="hidden">@item.id_comanda_pedido</td>
-                        <td>@Html.Encode(item.id_produto)</td>
+                        <td>@item.descricao_produto</td>
                         <td>@Html.Encode(item.valor)</td>
                         <td>@Html.Encode(item.quantidade)</td>
                         <td>@Html.Encode(item.total_pagar)</td>

@@ -6,8 +6,7 @@ namespace comandaOpe.Data.Models
     public class Pedido:BaseEntitie
     {
         public int id_comanda_pedido { get; set; }
-        
-		public int id_produto { get; set; }
+        public string descricao_produto{ get; set; }
         public bool status { get; set; }
         public int quantidade { get; set; }
         public double valor { get; set; }

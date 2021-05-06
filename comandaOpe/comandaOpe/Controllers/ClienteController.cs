@@ -16,16 +16,10 @@ namespace comandaOpe.Controllers
             {
                 var ltComandas = new ComandaModel().Listar().OrderBy(comanda => comanda.status).OrderBy(comanda => comanda.numero_comanda).ToList();
 
-                //if (ltComandasSemUso == null)
-                //{
-                //    TempData["comandaIndisponiveis"] = "Todas as comandas estão em uso.";
-                //}
-
                 return View("Cliente", ltComandas);
             }
             catch (Exception)
             {
-
                 throw;
             }
 
@@ -62,23 +56,30 @@ namespace comandaOpe.Controllers
                 int idComanda = Convert.ToInt32(comandaID);
                 var pesquisaCpf = new ClienteModel().Listar().Where(cli => cliente.cpf == cli.cpf);
 
+                var retorno = false;
+
                 if (pesquisaCpf.Count() == 0)
                 {
                     int idCliente = new ClienteModel().Inserir(cliente);
 
-                    AbrirComanda(idCliente, idComanda, 1);
+                    retorno = AbrirComanda(idCliente, idComanda, 1);
 
+                    
                 }
-                else { AbrirComanda(pesquisaCpf.FirstOrDefault().id, idComanda, 1); }
+                else { retorno = AbrirComanda(pesquisaCpf.FirstOrDefault().id, idComanda, 1); }
 
-                return RedirectToAction("Cliente");
+                if (retorno) { TempData["Sucesso"] = "Comanda aberta ! Clique em Gerenciar comanda para inserir pedidos."; }
+
+                else { TempData["Falha"] = "Erro ao abrir a comanda."; }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                TempData["Falha"] = "Erro ao abrir a comanda: " + e.Message ;
             }
+
+            return RedirectToAction("Cliente");
         }
+
         #endregion
 
         #region COMANDA
@@ -100,40 +101,7 @@ namespace comandaOpe.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult PegaCliente_AbrirComanda(string cpf, string numero_comanda, int idFunc)
-        {
-            try
-            {
-                var ltComandasSemUso = new ComandaModel().Listar().Where(comanda => comanda.status == false).ToList();
-
-                if (ltComandasSemUso.Count == 0) { TempData["comandaIndisponiveis"] = "Todas as comandas estão em uso."; }
-
-                var cliente = new ClienteModel().Listar().Where(cliente => cliente.cpf == cpf).ToList();
-
-                if (cliente.Count != 0)
-                {
-                    var idCliente = cliente.FirstOrDefault().id;
-
-                    //AbrirComanda(idCliente, numero_comanda, 1);
-                }
-                else
-                {
-                    TempData["cpfNaoCadastrado"] = "CPF não encontrado, por favor cadastre para abrir uma comanda";
-                }
-
-                return View("AbrirComanda", ltComandasSemUso);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            return View("AbrirComanda");
-        }
-
-        public void AbrirComanda(int idCliente, int idComanda, int idFunc)
+        public bool AbrirComanda(int idCliente, int idComanda, int idFunc)
         {
             try
             {
@@ -158,15 +126,14 @@ namespace comandaOpe.Controllers
                 alterarStatusComanda.status = true;
 
                 new ComandaModel().Alterar(alterarStatusComanda);
+
+                return true;
             }
-
-
-            catch (Exception e)
+            catch (Exception)
             {
-
+                return false;
             }
         }
-
 
         public ActionResult ListarPedidos(string comandaID)
         {
@@ -208,13 +175,11 @@ namespace comandaOpe.Controllers
             return View("ListaPedidosFechamentoConta", ltPedidos);
         }
 
-
         [HttpPost]
         public IActionResult FecharComanda(string comanda_Pedido_Id)
         {
             try
             {
-
                 var comandaPedido = new Comanda_PedidoModel().Listar().Where(cPedido => cPedido.id == Convert.ToInt32(comanda_Pedido_Id));
                 
                 if(comandaPedido.Count() != 0)
@@ -228,14 +193,13 @@ namespace comandaOpe.Controllers
                     new ComandaModel().Alterar(comanda);
                     new Comanda_ClienteModel().Alterar(comandaCliente);
 
-                    TempData["ComandaFechada"] = "Comanda fechada com sucesso!";
+                    TempData["Sucesso"] = "Comanda fechada com sucesso!";
                 }
             }
 
             catch (Exception e)
             {
-
-                throw e;
+                TempData["Falha"] = "Erro ao abrir a comanda: " + e.Message;
             }
 
             return RedirectToAction("Cliente");
@@ -264,24 +228,21 @@ namespace comandaOpe.Controllers
                 var inserirComanda = new ComandaModel().Inserir(comanda);
 
                 ltComandas = new ComandaModel().Listar().ToList();
-
-                return View("FormNovaComanda", ltComandas);
+                TempData["Sucesso"] = "Comanda inserida na relação";
             }
             catch (Exception e)
             {
-                var erro = e.InnerException.ToString();
-
-                if (erro.Contains("duplicate key value violates unique"))
-                {
-                    TempData["Falhou"] = "Numero de comanda ja foi cadastrado.";
-
-                };
+                if (e.ToString().Contains("duplicate key value violates unique"))
+                { 
+                    TempData["Falha"] = "Numero de comanda ja foi cadastrado."; 
+                }
             }
+
             ltComandas = new ComandaModel().Listar().ToList();
 
             return View("FormNovaComanda", ltComandas);
         }
-    }
 
-    #endregion
+        #endregion
+    }
 }
