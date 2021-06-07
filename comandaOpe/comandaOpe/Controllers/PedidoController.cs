@@ -1,13 +1,15 @@
 ﻿using comandaOpe.Data;
 using comandaOpe.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 
 namespace comandaOpe.Controllers
 {
+    [Authorize]
     public class PedidoController : Controller
-    {
+    {   
         #region Pedido
 
         [HttpGet]
@@ -49,7 +51,7 @@ namespace comandaOpe.Controllers
         }
 
         [HttpPost]
-        public IActionResult InserirPedido(string quantidade, string id_comanda_pedido, string produtoID, string valor)
+        public IActionResult InserirPedido(string quantidade, string id_comanda_pedido, string produtoID, string valor, string observacao = null)
         {
             try
             {
@@ -64,8 +66,9 @@ namespace comandaOpe.Controllers
                     id_comanda_pedido = intComandaID,
                     descricao_produto = produto.descricao,
                     quantidade = intQuantidade,
-                    valor = intQuantidade,
-                    status = true
+                    observacao = observacao != null ? observacao : null,
+                    valor = produto.preco
+                    
                 };
 
                 var retorno = new PedidoModel().Inserir(novoPedido);
@@ -79,6 +82,22 @@ namespace comandaOpe.Controllers
             }
 
             return RedirectToAction("ListarProdutos", new { id_comanda_pedido = id_comanda_pedido });
+        }
+
+        [HttpGet]
+        public IActionResult RemoverPedido(string id_pedido, string id_comanda_pedido)
+        {
+            try
+            {
+                var comanda = new PedidoModel().Remover(Convert.ToInt32(id_pedido));
+
+                return RedirectToAction("ListarPedidos", "Cliente", new { id_comanda_pedido = id_comanda_pedido });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         #endregion

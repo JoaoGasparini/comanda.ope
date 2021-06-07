@@ -21,12 +21,9 @@
             @TempData["LoginUsuarioFalhou"]
         </div>
     }
-    <div class="row">
-
-        <div class="col-md-12 d-flex justify-content-center">
-
-
-            <form asp-action="LoginUsuario">
+    <div class="row" align="center">
+        <div class="col-md-12 d-flex justify-content-center" align="center">
+            <form asp-action="LoginUsuario" align ="center">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group text-light font-weight-bold">
                     <label asp-for="Login" class="control-label">Usuário</label>

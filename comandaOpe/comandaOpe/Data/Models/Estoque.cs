@@ -5,7 +5,8 @@ namespace comandaOpe.Data.Models
     [Table("estoque")]
     public class Estoque:BaseEntitie
     {
-        public int id_produto { get; set; }
+        public string produto { get; set; }
+        public string fornecedor { get; set; }
         public int? quantidade { get; set; }
         
     }

@@ -1,12 +1,13 @@
 ﻿using comandaOpe.Data;
 using comandaOpe.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace comandaOpe.Controllers
 {
+    [Authorize]
     public class ProdutoController : Controller
     {
         #region Produto

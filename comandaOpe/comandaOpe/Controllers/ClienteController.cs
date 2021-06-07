@@ -1,5 +1,6 @@
 ﻿using comandaOpe.Data;
 using comandaOpe.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 
 namespace comandaOpe.Controllers
 {
+    [Authorize]
     public class ClienteController : Controller
     {
         #region CLIENTE
@@ -135,16 +137,25 @@ namespace comandaOpe.Controllers
             }
         }
 
-        public ActionResult ListarPedidos(string comandaID)
+        public ActionResult ListarPedidos(string comandaID, string id_comanda_pedido = null)
         {
             List<Pedido> ltPedidos = new List<Pedido>();
             try
             {
-                int idComanda = Convert.ToInt32(comandaID);
+                Comanda_Pedido comandaPedido = new Comanda_Pedido();
 
-                var comandaCliente = new Comanda_ClienteModel().Listar().Where(cCliente => cCliente.id_comanda == idComanda && cCliente.status == true).FirstOrDefault();
+                if (id_comanda_pedido != null)
+                {
+                    comandaPedido.id = Convert.ToInt32(id_comanda_pedido);
+                }
+                else
+                {
+                    int idComanda = Convert.ToInt32(comandaID);
 
-                var comandaPedido = new Comanda_PedidoModel().Listar().Where(comanda => comanda.id_comanda_cliente == comandaCliente.id).FirstOrDefault();
+                    var comandaCliente = new Comanda_ClienteModel().Listar().Where(cCliente => cCliente.id_comanda == idComanda && cCliente.status == true).FirstOrDefault();
+
+                    comandaPedido = new Comanda_PedidoModel().Listar().Where(comanda => comanda.id_comanda_cliente == comandaCliente.id).FirstOrDefault();
+                }
 
                 ltPedidos = new PedidoModel().Listar().Where(pedido => pedido.id_comanda_pedido == comandaPedido.id).ToList();
                 if (ltPedidos.Count > 0)
@@ -204,12 +215,13 @@ namespace comandaOpe.Controllers
 
             return RedirectToAction("Cliente");
         }
+
         public IActionResult FormNovaComanda()
         {
             try
             {
-                var ltComandas = new ComandaModel().Listar().ToList();
-
+                var ltComandas = new ComandaModel().Listar().OrderBy(comanda => comanda.status).OrderBy(comanda => comanda.numero_comanda).ToList();
+                
                 return View("FormNovaComanda", ltComandas);
             }
             catch (Exception)

@@ -32,38 +32,5 @@ namespace comandaOpe.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
-        #region COZINHA
-
-        [HttpGet]
-        public List<Pedido> ListarPedidos_NaoProntos()
-        {
-            var ltPedidosNaoProntos = new PedidoModel().Listar().Where(pedido => pedido.status == false).ToList();
-            return ltPedidosNaoProntos;
-        }
-
-        [HttpPut]
-        public IActionResult AlterarPedido_ProntoCozinha(Pedido pedido)
-        {
-            try
-            {
-                PedidoModel pedidoModel = new PedidoModel();
-
-                var alterarPedido = pedidoModel.Buscar(pedido.id);
-                pedido.status = true;
-
-                pedidoModel.Alterar(alterarPedido);
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
-            return View();
-        }
-
-        #endregion
-
     }
 }

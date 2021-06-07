@@ -1,5 +1,39 @@
 ﻿@model comandaOpe.Data.Models.Produto
 
+<header>
+    <nav class="navbar navbar-expand-lg rounded  navbar-light bg-white border-bottom box-shadow mb-3">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+            <ul class="navbar-nav mr-auto">
+                <img class="nav-item" src="/images/aurelianos.png" style="width: 9%; height:9%;">
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-controller="Usuario" asp-action="Painel">Painel</a></h2>
+                </li>
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-controller="Cozinha" asp-action="ListarPedidosEmAndamento">Pedidos</a></h2>
+                </li>
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-controller="Produto" asp-action="Produto">Produtos</a></h2>
+                </li>
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-controller="Cliente" asp-action="Cliente">Comandas</a></h2>
+                </li>
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-controller="Estoque" asp-action="ListarEstoque">Estoque</a></h2>
+                </li>
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-action="Logout">Logout</a></h2>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+
 @if (TempData["Falha"] != null)
 {
     <div class="alert alert-danger" role="alert">
@@ -24,7 +58,14 @@
     </div>
     <div class="col-12 mb-3">
         <label for="categoria" class="form-label">Categoria</label>
-        <input type="text" name="categoria" class="form-control" id="categoria" placeholder="Qual a categoria?">
+        <select name="categoria" id="categoria">
+            <option value="Entradas">Entradas</option>
+            <option value="Prato Principal">Prato Principal</option>
+            <option value="Porções">Porções</option>
+            <option value="Sobremesa">Sobremesa</option>
+            <option value="Bebidas">Bebidas</option>
+            <option value="Bebidas Alcoólicas">Bebidas Alcoólicas</option>
+        </select>
     </div>
 
     <div class="col-md-12 m">

@@ -1,7 +1,4 @@
-﻿@model List<comandaOpe.Data.Models.Comanda>
-@{
-    ViewBag.Title = "Comanda";
-}
+﻿@model comandaOpe.Data.Models.Estoque
 
 <header>
     <nav class="navbar navbar-expand-lg rounded  navbar-light bg-white border-bottom box-shadow mb-3">
@@ -26,9 +23,6 @@
                     <h2><a class="nav-link text-dark" asp-controller="Cliente" asp-action="Cliente">Comandas</a></h2>
                 </li>
                 <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-controller="Estoque" asp-action="ListarEstoque">Estoque</a></h2>
-                </li>
-                <li class="nav-item mt-4">
                     <h2><a class="nav-link text-dark" asp-action="Logout">Logout</a></h2>
                 </li>
             </ul>
@@ -36,41 +30,14 @@
     </nav>
 </header>
 
+<form method="post" asp-action="AdicionarItem" asp-controller="Estoque">
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" name="produto" id="produto" placeholder="Nome do produto" required="">
 
+        <input type="number" class="form-control" name="quantidade" id="quantidade" placeholder="Quantidade" required="">
 
-@using (Html.BeginForm("CadastrarCliente", "Cliente", FormMethod.Get))
-{
-    @Html.AntiForgeryToken()
+        <input type="text" class="form-control" name="fornecedor" id="fornecedor" placeholder="Fornecedor">
+    </div>
 
-    <input type="text" name="cpf" placeholder="Digite o CPF" />
-    <input type="text" name="nome" placeholder="Digite o nome" />
-    @if (TempData["comandaIndisponiveis"] != null)
-    {
-        <p class="alert alert-danger">@TempData["comandaIndisponiveis"]</p>
-    }
-
-    <input type="text" name="numero_comanda" placeholder="Digite o numero da comanda" />
-
-    <input type="submit" name="enviar" value="Salvar" />
-}
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Comandas Livres</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null)
-        {
-            @foreach (var item in Model)
-            {
-                <tr>
-
-                    <td>@Html.Encode(item.numero_comanda)</td>
-
-                </tr>
-            }
-        }
-    <tbody>
-</table>
-
+    <button type="submit" class="btn btn-lg btn-primary" value="Adicionar">Adicionar</button>
+</form>

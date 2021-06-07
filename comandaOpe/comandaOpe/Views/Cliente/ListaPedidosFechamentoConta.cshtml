@@ -1,5 +1,39 @@
 ﻿@model List<comandaOpe.Data.Models.Pedido>
 
+<header>
+    <nav class="navbar navbar-expand-lg rounded  navbar-light bg-white border-bottom box-shadow mb-3">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+            <ul class="navbar-nav mr-auto">
+                <img class="nav-item" src="/images/aurelianos.png" style="width: 9%; height:9%;">
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-controller="Usuario" asp-action="Painel">Painel</a></h2>
+                </li>
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-controller="Cozinha" asp-action="ListarPedidosEmAndamento">Pedidos</a></h2>
+                </li>
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-controller="Produto" asp-action="Produto">Produtos</a></h2>
+                </li>
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-controller="Cliente" asp-action="Cliente">Comandas</a></h2>
+                </li>
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-controller="Estoque" asp-action="ListarEstoque">Estoque</a></h2>
+                </li>
+                <li class="nav-item mt-4">
+                    <h2><a class="nav-link text-dark" asp-action="Logout">Logout</a></h2>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+
 @if (Model != null)
 {
     <form method="post" asp-action="ListarProduto" asp-controller="Pedido">
@@ -27,6 +61,14 @@
                         <td>@Html.Encode(item.valor)</td>
                         <td>@Html.Encode(item.quantidade)</td>
                         <td>@Html.Encode(item.total_pagar)</td>
+
+                        <td>
+                            <form method="get" asp-action="RemoverPedido" asp-controller="Pedido">
+                                <input name="id_pedido" id="id_pedido" hidden="hidden" value="@item.id" />
+                                <input name="id_comanda_pedido" id="id_comanda_pedido" hidden="hidden" value="@item.id_comanda_pedido" />
+                                <button class="btn btn-danger" type="submit"> <i class="fas fa-trash-alt"></i> </button>
+                            </form>
+                        </td>
                     </tr>
                 }
 
@@ -44,8 +86,6 @@
                 <a asp-controller="Cliente" asp-action="FecharComanda" pos><input type="submit" name="Sim" value="Sim" /></a>
 
                 @Html.Hidden("comanda_Pedido_Id", Model.FirstOrDefault().id_comanda_pedido)
-
-                <input type="submit" name="Não" value="Não" />
             </div>
         }
  }
