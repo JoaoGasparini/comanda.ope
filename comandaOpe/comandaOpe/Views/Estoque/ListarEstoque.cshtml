@@ -1,99 +1,115 @@
 ﻿@model List<IGrouping<string, comandaOpe.Data.Models.Estoque>>
 
-<header>
-    <nav class="navbar navbar-expand-lg rounded  navbar-light bg-white border-bottom box-shadow mb-3">
+<head>
+    <style>
+        .sidenav {
+            height: 100%;
+            width: 90px;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #fff;
+            overflow-x: hidden;
+            padding-top: 20px;
+            /*border-right: ;*/
+        }
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-            <ul class="navbar-nav mr-auto">
-                <img class="nav-item" src="/images/aurelianos.png" style="width: 9%; height:9%;">
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-controller="Usuario" asp-action="Painel">Painel</a></h2>
-                </li>
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-controller="Cozinha" asp-action="ListarPedidosEmAndamento">Pedidos</a></h2>
-                </li>
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-controller="Produto" asp-action="Produto">Produtos</a></h2>
-                </li>
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-controller="Cliente" asp-action="Cliente">Comandas</a></h2>
-                </li>
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-action="Logout">Logout</a></h2>
-                </li>
-            </ul>
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-top: 20px;
+            margin-left: 50px;
+            padding: 0px 10px;
+        }
+    </style>
+</head>
+
+<div class="sidenav">
+    <img class="nav-item" src="/images/aurelianos.png" style="width: 85px; height:85px;">
+    <a asp-controller="Cozinha" asp-action="ListarPedidosEmAndamento"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Pedidos"><i style="color:#000000" class="fas fa-hamburger fa-2x"></i></button></a>
+    <a asp-controller="Produto" asp-action="Produto"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Cardápio"><i style="color:#000000" class="fas fa-list-ol fa-2x"></i></button></a>
+    <a asp-controller="Cliente" asp-action="Cliente"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Comandas"><i style="color: #000000" class="fas fa-th fa-2x"></i></button></a>
+    <a asp-controller="Estoque" asp-action="ListarEstoque"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque"><i style="color:#000000" class="fas fa-dolly-flatbed fa-2x"></i></button></a>
+    <a asp-controller="Usuario" asp-action="Logout"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Sair"><i style="color:#000000" class="fas fa-sign-out-alt fa-2x"></i></button></a>
+</div>
+
+<div class="main">
+    @if (TempData["Falha"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Falha"]
         </div>
-    </nav>
-</header>
+    }
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Sucesso"]
+        </div>
+    }
 
-@if (TempData["Falha"] != null)
-{
-    <div class="alert alert-danger" role="alert">
-        @TempData["Falha"]
-    </div>
-}
-@if (TempData["Sucesso"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["Sucesso"]
-    </div>
-}
+    <h2 class="mb-2">Estoque</h2>
 
+    <form class="mb-3" method="get" asp-action="AdicionarItem" asp-controller="Estoque">
+        <button class="btn btn-success" type="submit"> <i class="fas fa-plus-circle"></i> </button>
+    </form>
 
-<form method="get" asp-action="AdicionarItem" asp-controller="Estoque">
-    <button class="btn btn-success" type="submit"> <i class="fas fa-plus-circle"></i> </button>
-</form>
+    <hr />
 
-@foreach (var categoria in Model)
-{
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Categoria: @categoria.Key</th>
-            </tr>
-            <tr>
-                <th scope="col">PRODUTO</th>
-                <th scope="col">QUANTIDADE</th>
-                <th scope="col">FORNECEDOR</th>
-                <th scope="col">ADICIONAR</th>
-                <th scope="col">REMOVER</th>
-                <th scope="col">REMOVER ITEM</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in categoria)
-            {
+    @foreach (var categoria in Model)
+    {
+        <h2>Categoria: @categoria.Key</h2>
+        <table class="table table-hover">
+            <thead>
                 <tr>
-                    <td>@item.produto</td>
-                    <td>@item.quantidade</td>
-                    <td>@item.fornecedor</td>
+                    <th scope="col">PRODUTO</th>
+                    <th scope="col">QUANTIDADE</th>
+                    <th scope="col">FORNECEDOR</th>
+                    <th scope="col">ADICIONAR</th>
+                    <th scope="col">REMOVER</th>
+                    <th scope="col">REMOVER ITEM</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in categoria)
+                {
+                    <tr>
+                        <td>@item.produto</td>
+                        <td>@item.quantidade</td>
+                        <td>@item.fornecedor</td>
 
-                    <form method="post" asp-action="SomarItem" asp-controller="Estoque">
-                        <input name="id" id="id" hidden="hidden" value="@item.id" />
-                        <td>
-                            <input type="number" id="quantidadeNova" name="quantidadeNova" required="" placeholder="Quantidade a ser adicionada" min="1" />
-                            <button class="btn btn-primary" type="submit"> <i class="fas fa-plus"></i> </button>
-                        </td>
-                    </form>
+                        <form method="post" asp-action="SomarItem" asp-controller="Estoque">
+                            <input name="id" id="id" hidden="hidden" value="@item.id" />
+                            <td>
+                                <input type="number" id="quantidadeNova" name="quantidadeNova" required="" min="1" style="width:50px" />
+                                <button class="btn btn-primary" type="submit"> <i class="fas fa-plus"></i> </button>
+                            </td>
+                        </form>
 
-                    <form method="post" asp-action="SubtrairItem" asp-controller="Estoque">
-                        <input name="id" id="id" hidden="hidden" value="@item.id" />
-                        <td>
-                            <input type="number" id="quantidadeNova" name="quantidadeNova" required="" placeholder="Quantidade a ser adicionada" min="1" />
-                            <button class="btn btn-primary" type="submit"> <i class="fas fa-minus"></i> </button>
-                        </td>
-                    </form>
+                        <form method="post" asp-action="SubtrairItem" asp-controller="Estoque">
+                            <input name="id" id="id" hidden="hidden" value="@item.id" />
+                            <td>
+                                <input type="number" id="quantidadeNova" name="quantidadeNova" required="" min="1" style="width:50px"/>
+                                <button class="btn btn-primary" type="submit"> <i class="fas fa-minus"></i> </button>
+                            </td>
+                        </form>
 
-                    <form method="get" asp-action="RemoverItem" asp-controller="Estoque">
-                        <input name="id" id="id" hidden="hidden" value="@item.id" />
-                        <td><button class="btn btn-primary" type="submit"> <i class="fas fa-trash"></i> </button></td>
-                    </form>
+                        <form method="get" asp-action="RemoverItem" asp-controller="Estoque">
+                            <input name="id" id="id" hidden="hidden" value="@item.id" />
+                            <td><button class="btn btn-primary" type="submit"> <i class="fas fa-trash"></i> </button></td>
+                        </form>
                     </tr>
                 }
             </tbody>
-    </table>
-}
+        </table>
+    }
+</div>

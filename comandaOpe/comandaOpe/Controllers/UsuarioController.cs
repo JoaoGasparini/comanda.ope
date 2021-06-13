@@ -24,7 +24,7 @@ namespace comandaOpe.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction("UsuarioLogin", "Login");
+            return RedirectToAction("LoginUsuario", "Login");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

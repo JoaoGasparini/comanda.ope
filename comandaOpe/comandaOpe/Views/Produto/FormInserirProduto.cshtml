@@ -1,75 +1,85 @@
 ﻿@model comandaOpe.Data.Models.Produto
 
-<header>
-    <nav class="navbar navbar-expand-lg rounded  navbar-light bg-white border-bottom box-shadow mb-3">
+<head>
+    <style>
+        .sidenav {
+            height: 100%;
+            width: 90px;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #fff;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-            <ul class="navbar-nav mr-auto">
-                <img class="nav-item" src="/images/aurelianos.png" style="width: 9%; height:9%;">
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-controller="Usuario" asp-action="Painel">Painel</a></h2>
-                </li>
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-controller="Cozinha" asp-action="ListarPedidosEmAndamento">Pedidos</a></h2>
-                </li>
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-controller="Produto" asp-action="Produto">Produtos</a></h2>
-                </li>
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-controller="Cliente" asp-action="Cliente">Comandas</a></h2>
-                </li>
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-controller="Estoque" asp-action="ListarEstoque">Estoque</a></h2>
-                </li>
-                <li class="nav-item mt-4">
-                    <h2><a class="nav-link text-dark" asp-action="Logout">Logout</a></h2>
-                </li>
-            </ul>
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-top: 20px;
+            margin-left: 50px;
+            padding: 0px 10px;
+        }
+    </style>
+</head>
+
+<div class="sidenav">
+    <img class="nav-item" src="/images/aurelianos.png" style="width: 85px; height:85px;">
+    <a asp-controller="Cozinha" asp-action="ListarPedidosEmAndamento"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Pedidos"><i style="color:#000000" class="fas fa-hamburger fa-2x"></i></button></a>
+    <a asp-controller="Produto" asp-action="Produto"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Cardápio"><i style="color:#000000" class="fas fa-list-ol fa-2x"></i></button></a>
+    <a asp-controller="Cliente" asp-action="Cliente"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Comandas"><i style="color: #000000" class="fas fa-th fa-2x"></i></button></a>
+    <a asp-controller="Estoque" asp-action="ListarEstoque"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque"><i style="color:#000000" class="fas fa-dolly-flatbed fa-2x"></i></button></a>
+    <a asp-controller="Usuario" asp-action="Logout"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Sair"><i style="color:#000000" class="fas fa-sign-out-alt fa-2x"></i></button></a>
+</div>
+
+<div class="main">
+    @if (TempData["Falha"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Falha"]
         </div>
-    </nav>
-</header>
+    }
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Sucesso"]
+        </div>
+    }
 
+    <form class="row g-3" method="post">
+        <div class="col-md-12">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" name="descricao" class="form-control" id="nome" placeholder="Insira o Nome">
+        </div>
+        <div class="col-md-4">
+            <label for="preco" class="form-label">Preço</label>
+            <input type="number" name="preco" class="form-control" id="preco" placeholder="Insira o Valor">
+        </div>
+        <div class="col-12 mt-3">
+            <label for="categoria" class="form-label">Categoria</label>
+            <select name="categoria" id="categoria">
+                <option value="Entradas">Entradas</option>
+                <option value="Prato Principal">Prato Principal</option>
+                <option value="Porções">Porções</option>
+                <option value="Sobremesa">Sobremesa</option>
+                <option value="Bebidas">Bebidas</option>
+                <option value="Bebidas Alcoólicas">Bebidas Alcoólicas</option>
+            </select>
+        </div>
 
-@if (TempData["Falha"] != null)
-{
-    <div class="alert alert-danger" role="alert">
-        @TempData["Falha"]
-    </div>
-}
-@if (TempData["Sucesso"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["Sucesso"]
-    </div>
-}
-
-<form class="row g-3" method="post">
-    <div class="col-md-8">
-        <label for="nome" class="form-label">Nome</label>
-        <input type="text" name="descricao" class="form-control" id="nome" placeholder="Insira o Nome">
-    </div>
-    <div class="col-md-4">
-        <label for="preco" class="form-label">Preço</label>
-        <input type="number" name="preco" class="form-control" id="preco" placeholder="Insira o Valor">
-    </div>
-    <div class="col-12 mb-3">
-        <label for="categoria" class="form-label">Categoria</label>
-        <select name="categoria" id="categoria">
-            <option value="Entradas">Entradas</option>
-            <option value="Prato Principal">Prato Principal</option>
-            <option value="Porções">Porções</option>
-            <option value="Sobremesa">Sobremesa</option>
-            <option value="Bebidas">Bebidas</option>
-            <option value="Bebidas Alcoólicas">Bebidas Alcoólicas</option>
-        </select>
-    </div>
-
-    <div class="col-md-12 m">
-        <button type="submit" class="btn btn-success" asp-action="InserirProduto">Salvar</button>
-        <button type="submit" class="btn btn-danger" asp-action="Produto">Voltar</button>
-    </div>
-</form>
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-success" asp-action="InserirProduto">Salvar</button>
+            <button type="submit" class="btn btn-danger" asp-action="Produto">Voltar</button>
+        </div>
+    </form>
+</div>
