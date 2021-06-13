@@ -33,7 +33,7 @@
 @if (TempData["Falha"] != null)
 {
     <p class="alert alert-danger">
-        @TempData["ComandaFechada"]
+        @TempData["Falha"]
     </p>
 }
 @if (TempData["Sucesso"] != null)
@@ -46,11 +46,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
+            <form method="post" asp-action="FormNovaComanda" asp-controller="Cliente">
+                <button class="btn btn-success" type="submit"> <i class="fas fa-plus-circle"></i> </button>
+            </form>
             <table class="table table-striped">
-
-                <form method="post" asp-action="FormNovaComanda" asp-controller="Cliente">
-                    <button class="btn btn-success" type="submit"> <i class="fas fa-plus-circle"></i> </button>
-                </form>
                 <thead>
                     <tr>
                         <th scope="col">COMANDAS LIVRES</th>
@@ -70,19 +69,23 @@
                                     <td> @Html.ActionLink("Abrir Comanda", "FormCliente", new { comandaID = item.id }) </td>
                                 }
                             </tr>
-
                         }
                     </tbody>
                 }
             </table>
         </div>
-        <div class="col-md-6 mt-4">
+        <div class="col-md-6 mt-6">
+            <div align="right">
+                <form class="form-inline my-2 my-lg-0" asp-action="BuscarComanda" asp-controller="Cliente" method="get">
+                    <input type="number" class="form-control mr-sm-2" type="search" name="numero_comanda" id="numero_comanda" placeholder="Pesquisar" aria-label="Pesquisar" required="" >
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+                </form>
+            </div>
             <table class="table table-striped">
                 <thead>
                 <th scope="col">COMANDAS EM USO</th>
                 <th scope="col"></th>
                 </thead>
-
                 @if (Model != null)
                 {
                     <tbody>

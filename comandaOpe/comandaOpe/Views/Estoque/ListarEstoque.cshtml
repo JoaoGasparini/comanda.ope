@@ -1,4 +1,4 @@
-﻿@model List<comandaOpe.Data.Models.Estoque>
+﻿@model List<IGrouping<string, comandaOpe.Data.Models.Estoque>>
 
 <header>
     <nav class="navbar navbar-expand-lg rounded  navbar-light bg-white border-bottom box-shadow mb-3">
@@ -47,46 +47,53 @@
 <form method="get" asp-action="AdicionarItem" asp-controller="Estoque">
     <button class="btn btn-success" type="submit"> <i class="fas fa-plus-circle"></i> </button>
 </form>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">PRODUTO</th>
-            <th scope="col">QUANTIDADE</th>
-            <th scope="col">FORNECEDOR</th>
-            <th scope="col">ADICIONAR QUANTIDADE</th>
-            <th scope="col">REMOVER QUANTIDADE</th>
-            <th scope="col">REMOVER ITEM</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+
+@foreach (var categoria in Model)
+{
+    <table class="table table-hover">
+        <thead>
             <tr>
-                <td>@item.produto</td>
-                <td>@item.quantidade</td>
-                <td>@item.fornecedor</td>
-
-                <form method="post" asp-action="SomarItem" asp-controller="Estoque">
-                    <input name="id" id="id" hidden="hidden" value="@item.id" />
-                    <td>
-                        <input type="number" id="quantidadeNova" name="quantidadeNova" required="" placeholder="Quantidade a ser adicionada" min="1" />
-                        <button class="btn btn-primary" type="submit"> <i class="fas fa-plus"></i> </button>
-                    </td>
-                </form>
-
-                <form method="post" asp-action="SubtrairItem" asp-controller="Estoque">
-                    <input name="id" id="id" hidden="hidden" value="@item.id" />
-                    <td>
-                        <input type="number" id="quantidadeNova" name="quantidadeNova" required="" placeholder="Quantidade a ser adicionada" min="1" />
-                        <button class="btn btn-primary" type="submit"> <i class="fas fa-minus"></i> </button>
-                    </td>
-                </form>
-
-                <form method="get" asp-action="RemoverItem" asp-controller="Estoque">
-                    <input name="id" id="id" hidden="hidden" value="@item.id" />
-                    <td><button class="btn btn-primary" type="submit"> <i class="fas fa-trash"></i> </button></td>
-                </form>
+                <th scope="col">Categoria: @categoria.Key</th>
             </tr>
-        }
-    </tbody>
-</table>
+            <tr>
+                <th scope="col">PRODUTO</th>
+                <th scope="col">QUANTIDADE</th>
+                <th scope="col">FORNECEDOR</th>
+                <th scope="col">ADICIONAR</th>
+                <th scope="col">REMOVER</th>
+                <th scope="col">REMOVER ITEM</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in categoria)
+            {
+                <tr>
+                    <td>@item.produto</td>
+                    <td>@item.quantidade</td>
+                    <td>@item.fornecedor</td>
+
+                    <form method="post" asp-action="SomarItem" asp-controller="Estoque">
+                        <input name="id" id="id" hidden="hidden" value="@item.id" />
+                        <td>
+                            <input type="number" id="quantidadeNova" name="quantidadeNova" required="" placeholder="Quantidade a ser adicionada" min="1" />
+                            <button class="btn btn-primary" type="submit"> <i class="fas fa-plus"></i> </button>
+                        </td>
+                    </form>
+
+                    <form method="post" asp-action="SubtrairItem" asp-controller="Estoque">
+                        <input name="id" id="id" hidden="hidden" value="@item.id" />
+                        <td>
+                            <input type="number" id="quantidadeNova" name="quantidadeNova" required="" placeholder="Quantidade a ser adicionada" min="1" />
+                            <button class="btn btn-primary" type="submit"> <i class="fas fa-minus"></i> </button>
+                        </td>
+                    </form>
+
+                    <form method="get" asp-action="RemoverItem" asp-controller="Estoque">
+                        <input name="id" id="id" hidden="hidden" value="@item.id" />
+                        <td><button class="btn btn-primary" type="submit"> <i class="fas fa-trash"></i> </button></td>
+                    </form>
+                    </tr>
+                }
+            </tbody>
+    </table>
+}

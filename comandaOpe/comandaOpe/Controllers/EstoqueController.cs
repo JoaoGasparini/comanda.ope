@@ -21,7 +21,9 @@ namespace comandaOpe.Controllers
             {
                 var ltEstoque = estoqueModel.Listar().ToList();
 
-                return View("ListarEstoque", ltEstoque);
+                var gpCategoria = ltEstoque.GroupBy(eCategoria => eCategoria.categoria).OrderBy(eCategoria => eCategoria.Key).ToList();
+
+                return View("ListarEstoque", gpCategoria);
             }
             catch (Exception)
             {

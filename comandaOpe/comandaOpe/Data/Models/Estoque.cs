@@ -8,6 +8,7 @@ namespace comandaOpe.Data.Models
         public string produto { get; set; }
         public string fornecedor { get; set; }
         public int? quantidade { get; set; }
-        
+        public string categoria { get; set; }
+
     }
 }

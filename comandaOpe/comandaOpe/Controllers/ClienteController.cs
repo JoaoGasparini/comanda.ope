@@ -255,6 +255,27 @@ namespace comandaOpe.Controllers
             return View("FormNovaComanda", ltComandas);
         }
 
+        [HttpGet]
+        public IActionResult BuscarComanda(string numero_comanda)
+        {
+            try
+            {
+                var comanda = new ComandaModel().Listar().Where(comanda => comanda.numero_comanda == (Convert.ToInt32(numero_comanda))).ToList();
+                if (comanda.Count() < 1) 
+                {
+                    TempData["Falha"] = "Comanda não encontrada";
+                    return RedirectToAction("Cliente");
+                }
+
+                return View("Cliente", comanda);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
         #endregion
     }
 }

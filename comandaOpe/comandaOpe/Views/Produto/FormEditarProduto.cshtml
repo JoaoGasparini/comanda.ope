@@ -43,9 +43,16 @@
         <label for="preco" class="form-label">Preço</label>
         <input type="number" name="preco" class="form-control" id="preco" value="@Model.preco">
     </div>
-    <div class="col-12">
+    <div class="col-12 mb-3">
         <label for="categoria" class="form-label">Categoria</label>
-        <input type="text" name="categoria" class="form-control" id="categoria" value="@Model.categoria">
+        <select name="categoria" id="categoria">
+            <option value="Entradas">Entradas</option>
+            <option value="Prato Principal">Prato Principal</option>
+            <option value="Porções">Porções</option>
+            <option value="Sobremesa">Sobremesa</option>
+            <option value="Bebidas">Bebidas</option>
+            <option value="Bebidas Alcoólicas">Bebidas Alcoólicas</option>
+        </select>
     </div>
     <div class="col-12 mb-3">
         <input name="id" class="form-control" id="id" hidden="hidden" value="@Model.id" />
