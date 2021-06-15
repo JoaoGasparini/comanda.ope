@@ -12,7 +12,7 @@
             background-color: #fff;
             overflow-x: hidden;
             padding-top: 20px;
-            /*border-right: ;*/
+            border-right: 1px solid #dee2e6;
         }
 
         .sidenav a {
@@ -66,7 +66,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">COMANDAS LIVRES</th>
+                            <th scope="col">Comandas Livres</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -91,13 +91,13 @@
             <div class="col-md-6 mt-6">
                 <div align="right">
                     <form class="form-inline my-2 my-lg-0" asp-action="BuscarComanda" asp-controller="Cliente" method="get">
-                        <input type="number" class="form-control mr-sm-2 mb-2" type="search" name="numero_comanda" id="numero_comanda" placeholder="Pesquisar" aria-label="Pesquisar" required="">
+                        <input type="number" class="form-control mr-sm-2 mb-2" type="search" name="numero_comanda" id="numero_comanda" style="width: 100px" aria-label="Pesquisar" required="">
                         <button class="btn btn-outline-info mb-2" type="submit">Pesquisar</button>
                     </form>
                 </div>
                 <table class="table table-striped">
                     <thead>
-                    <th scope="col">COMANDAS EM USO</th>
+                    <th scope="col">Comandas em uso</th>
                     <th scope="col"></th>
                     </thead>
                     @if (Model != null)

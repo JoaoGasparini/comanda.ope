@@ -13,35 +13,36 @@
         z-index: -1;
     }
 </style>
-    <div class="row" align="center" style="margin-top: 10%">
-    <hr/>
-   @if(TempData["LoginUsuarioFalhou"] != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @TempData["LoginUsuarioFalhou"]
-        </div>
-    }
-        <div class="col-md-12 d-flex justify-content-center" align="center">
-            <form asp-action="LoginUsuario" align="center">
-                <h2 class="text-light text-center font-weight-bold">Login</h2>
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group text-light font-weight-bold">
-                    <label asp-for="Login" class="control-label">Usuário</label>
-                    <input asp-for="Login" class="form-control" />
-                    <span asp-validation-for="Login" class="text-danger"></span>
-                </div>
-                <div class="form-group text-light font-weight-bold">
-                    <label asp-for="Senha" class="control-label">Senha</label>
-                    <input asp-for="Senha" class="form-control" />
-                    <span asp-validation-for="Senha" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Login" class="btn btn-default btn-success" />
-                    <a asp-action="RegistrarUsuario" class="btn btn-info">Registrar</a>
-                </div>
-            </form>
-        </div>
+@if (TempData["LoginUsuarioFalhou"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["LoginUsuarioFalhou"]
     </div>
+}
+<div class="row" align="center" style="margin-top: 10%">
+    <hr />
+
+    <div class="col-md-12 d-flex justify-content-center" align="center">
+        <form asp-action="LoginUsuario" align="center">
+            <h2 class="text-light text-center font-weight-bold">Login</h2>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group text-light font-weight-bold">
+                <label asp-for="Login" class="control-label">Usuário</label>
+                <input asp-for="Login" class="form-control" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div class="form-group text-light font-weight-bold">
+                <label asp-for="Senha" class="control-label">Senha</label>
+                <input asp-for="Senha" class="form-control" />
+                <span asp-validation-for="Senha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-default btn-success" />
+                <a asp-action="RegistrarUsuario" class="btn btn-info">Registrar</a>
+            </div>
+        </form>
+    </div>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
