@@ -31,6 +31,8 @@ namespace comandaOpe.Data
         public DbSet<Pedido> Pedido { get; set; }
         public DbSet<Cozinha> Cozinha { get; set; }
         public DbSet<Comanda> Comanda { get; set; }
-        
+        public DbSet<Comanda_Pedido> Comanda_Pedido { get; set; }
+        public DbSet<Comanda_Cliente> Comanda_Cliente { get; set; }
+
     }
 }

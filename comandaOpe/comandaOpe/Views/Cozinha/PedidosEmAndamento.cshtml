@@ -1,0 +1,81 @@
+﻿@model List<comandaOpe.Data.Models.Pedido>
+<meta http-equiv="refresh" content="12" />
+
+<head>
+    <style>
+        .sidenav {
+            height: 100%;
+            width: 90px;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #fff;
+            overflow-x: hidden;
+            padding-top: 20px;
+            border-right: 1px solid #dee2e6;
+        }
+
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-top: 20px;
+            margin-left: 50px;
+            padding: 0px 10px;
+        }
+    </style>
+</head>
+
+<div class="sidenav">
+    <img class="nav-item" src="/images/aurelianos.png" style="width: 85px; height:85px;">
+    <a asp-controller="Cozinha" asp-action="ListarPedidosEmAndamento"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Pedidos"><i style="color:#000000" class="fas fa-hamburger fa-2x"></i></button></a>
+    <a asp-controller="Produto" asp-action="Produto"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Cardápio"><i style="color:#000000" class="fas fa-list-ol fa-2x"></i></button></a>
+    <a asp-controller="Cliente" asp-action="Cliente"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Comandas"><i style="color: #000000" class="fas fa-th fa-2x"></i></button></a>
+    <a asp-controller="Estoque" asp-action="ListarEstoque"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque"><i style="color:#000000" class="fas fa-dolly-flatbed fa-2x"></i></button></a>
+    <a asp-controller="Usuario" asp-action="Logout"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Sair"><i style="color:#000000" class="fas fa-sign-out-alt fa-2x"></i></button></a>
+</div>
+
+<div class="main">
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Sucesso"]
+        </div>
+    }
+    <h2 class="mb-3">Pedidos em andamento</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Pedido</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Observação</th>
+                <th scope="col">Pedido Pronto?</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pedido in Model)
+            {
+                <tr>
+                    <td>@pedido.descricao_produto</td>
+                    <td>@pedido.quantidade</td>
+                    <td>@pedido.observacao</td>
+                    <td>
+                        <form method="get" asp-action="ConcluirPedido" asp-controller="Cozinha">
+                            <input name="id_pedido" id="id_pedido" hidden="hidden" value="@pedido.id" />
+                            <button class="btn btn-primary" type="submit"><i class="fas fa-check-circle"></i></button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

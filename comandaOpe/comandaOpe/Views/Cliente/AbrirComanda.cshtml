@@ -1,0 +1,77 @@
+﻿@model comandaOpe.Data.Models.Comanda
+@{
+    ViewBag.Title = "Comandas";
+}
+
+<head>
+    <style>
+        .sidenav {
+            height: 100%;
+            width: 90px;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #fff;
+            overflow-x: hidden;
+            padding-top: 20px;
+            border-right: 1px solid #dee2e6;
+        }
+
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-top: 20px;
+            margin-left: 50px;
+            padding: 0px 10px;
+        }
+    </style>
+</head>
+
+<div class="sidenav">
+    <img class="nav-item" src="/images/aurelianos.png" style="width: 85px; height:85px;">
+    <a asp-controller="Cozinha" asp-action="ListarPedidosEmAndamento"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Pedidos"><i style="color:#000000" class="fas fa-hamburger fa-2x"></i></button></a>
+    <a asp-controller="Produto" asp-action="Produto"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Cardápio"><i style="color:#000000" class="fas fa-list-ol fa-2x"></i></button></a>
+    <a asp-controller="Cliente" asp-action="Cliente"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Comandas"><i style="color: #000000" class="fas fa-th fa-2x"></i></button></a>
+    <a asp-controller="Estoque" asp-action="ListarEstoque"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque"><i style="color:#000000" class="fas fa-dolly-flatbed fa-2x"></i></button></a>
+    <a asp-controller="Usuario" asp-action="Logout"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Sair"><i style="color:#000000" class="fas fa-sign-out-alt fa-2x"></i></button></a>
+</div>
+
+<div class="main">
+    <h2 class="mb-2">Vincular Cliente</h2>
+    <form method="post" asp-action="CadastrarCliente">
+        @if (TempData["cpfNaoCadastrado"] != null)
+        {
+            <p class="alert alert-danger">@TempData["cpfNaoCadastrado"]</p>
+        }
+        <label for="nome" class="form-label">Nome:</label>
+        <input type="text" id="nome" name="nome" class="form-control" />
+
+        <label for="cpf" class="form-label">CPF: </label>
+        <input type="text" id="cpf" name="cpf" class="form-control" />
+
+        <label for="numero_comanda" class="form-label">Numero da Comanda: </label>
+        <input type="text" id="numero_comanda" name="numero_comanda" class="form-control" disabled="" value=@Model.numero_comanda />
+
+        <div class="col-12 mb-3">
+            <input name="comandaID" class="form-control" id="comandaID" hidden="hidden" value="@Html.Encode(Model.id)" />
+        </div>
+
+        @if (TempData["comandaIndisponiveis"] != null)
+        {
+            <p class="alert alert-danger">@TempData["comandaIndisponiveis"]</p>
+        }
+
+        <input type="submit" class="btn btn-success" name="enviar" value="Salvar" />
+    </form>
+</div>
+

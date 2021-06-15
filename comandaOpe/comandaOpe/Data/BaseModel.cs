@@ -74,17 +74,17 @@ namespace comandaOpe.Data
                 throw e;
             }
         }
-        public int Remover(int id)
+        public bool Remover(int id)
         {
-            int Id = 0;
             try
             {
                 var buscar = Listar().Where(item => item.id == id).FirstOrDefault();
                 dbSistemaComandaContext.Remove<T>(buscar);
 
-                id = dbSistemaComandaContext.SaveChanges();
+                var idRetorno = dbSistemaComandaContext.SaveChanges();
 
-                return Id;
+                var retorno = true;
+                return retorno;
             }
             catch (Exception e)
             {

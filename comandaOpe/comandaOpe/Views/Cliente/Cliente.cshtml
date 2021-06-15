@@ -1,0 +1,124 @@
+﻿@model List<comandaOpe.Data.Models.Comanda>
+
+<head>
+    <style>
+        .sidenav {
+            height: 100%;
+            width: 90px;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #fff;
+            overflow-x: hidden;
+            padding-top: 20px;
+            border-right: 1px solid #dee2e6;
+        }
+
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-top: 20px;
+            margin-left: 50px;
+            padding: 0px 10px;
+        }
+    </style>
+</head>
+
+<div class="sidenav">
+    <img class="nav-item" src="/images/aurelianos.png" style="width: 85px; height:85px;">
+    <a asp-controller="Cozinha" asp-action="ListarPedidosEmAndamento"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Pedidos"><i style="color:#000000" class="fas fa-hamburger fa-2x"></i></button></a>
+    <a asp-controller="Produto" asp-action="Produto"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Cardápio"><i style="color:#000000" class="fas fa-list-ol fa-2x"></i></button></a>
+    <a asp-controller="Cliente" asp-action="Cliente"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Comandas"><i style="color: #000000" class="fas fa-th fa-2x"></i></button></a>
+    <a asp-controller="Estoque" asp-action="ListarEstoque"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque"><i style="color:#000000" class="fas fa-dolly-flatbed fa-2x"></i></button></a>
+    <a asp-controller="Usuario" asp-action="Logout"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Sair"><i style="color:#000000" class="fas fa-sign-out-alt fa-2x"></i></button></a>
+</div>
+
+<div class="main">
+    @if (TempData["Falha"] != null)
+    {
+        <p class="alert alert-danger">
+            @TempData["Falha"]
+        </p>
+    }
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Sucesso"]
+        </div>
+    }
+    <h2 class="mb-4">Gerenciamento de Comandas</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <form method="post" asp-action="FormNovaComanda" asp-controller="Cliente">
+                    <button class="btn btn-success mb-2" type="submit"> <i class="fas fa-plus-circle"></i> </button>
+                </form>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Comandas Livres</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+
+                    @if (Model != null)
+                    {
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    @if (item.status == false)
+                                    {
+                                        <td>@item.numero_comanda</td>
+                                        <td> @Html.ActionLink("Abrir Comanda", "FormCliente", new { comandaID = item.id }) </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                </table>
+            </div>
+            <div class="col-md-6 mt-6">
+                <div align="right">
+                    <form class="form-inline my-2 my-lg-0" asp-action="BuscarComanda" asp-controller="Cliente" method="get">
+                        <input type="number" class="form-control mr-sm-2 mb-2" type="search" name="numero_comanda" id="numero_comanda" style="width: 100px" aria-label="Pesquisar" required="">
+                        <button class="btn btn-outline-info mb-2" type="submit">Pesquisar</button>
+                    </form>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                    <th scope="col">Comandas em uso</th>
+                    <th scope="col"></th>
+                    </thead>
+                    @if (Model != null)
+                    {
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    @if (item.status == true)
+                                    {
+                                        <td> @item.numero_comanda</td>
+                                        <td> @Html.ActionLink("Gerenciar Comanda", "ListarPedidos", new { comandaID = item.id }) </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

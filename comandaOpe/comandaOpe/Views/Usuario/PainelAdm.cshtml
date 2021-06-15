@@ -1,0 +1,56 @@
+﻿<head>
+    <style>
+
+    body::after {
+        content: "";
+        background: url(../images/Restaurant-2.jpg) no-repeat center center fixed;
+        opacity: 0.8;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+        background-size: cover;
+    }
+
+        .sidenav {
+            height: 100%;
+            width: 90px;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #fff;
+            overflow-x: hidden;
+            padding-top: 20px;
+            border-right: 1px solid #dee2e6;
+        }
+
+    .sidenav a {
+      padding: 6px 8px 6px 16px;
+      text-decoration: none;
+      color: #818181;
+      display: block;
+    }
+
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
+
+     @@media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+    </style>
+    <script src="https://kit.fontawesome.com/fc7224cc6c.js" crossorigin="anonymous"></script>
+</head>
+
+<div class="sidenav">
+    <img class="nav-item" src="/images/aurelianos.png" style="width: 85px; height:85px;">
+    <a asp-controller="Cozinha" asp-action="ListarPedidosEmAndamento"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Pedidos"><i style="color:#000000" class="fas fa-hamburger fa-2x"></i></button></a>
+    <a asp-controller="Produto" asp-action="Produto"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Cardápio"><i style="color:#000000" class="fas fa-list-ol fa-2x"></i></button></a>
+    <a asp-controller="Cliente" asp-action="Cliente"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Comandas"><i style="color: #000000" class="fas fa-th fa-2x"></i></button></a>
+    <a asp-controller="Estoque" asp-action="ListarEstoque"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Estoque"><i style="color:#000000" class="fas fa-dolly-flatbed fa-2x"></i></button></a>
+    <a asp-controller="Usuario" asp-action="Logout"><button type="button" style="border:none; background: transparent" class="btn mr-5" data-bs-toggle="tooltip" data-bs-placement="top" title="Sair"><i style="color:#000000" class="fas fa-sign-out-alt fa-2x"></i></button></a>
+</div>
