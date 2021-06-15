@@ -15,9 +15,19 @@ namespace comandaOpe.Controllers
             {
                 List<Pedido> ltPedidos = new PedidoModel().Listar().Where(pedido => pedido.status != true).ToList();
 
+                foreach(var pedido in ltPedidos.ToList())
+                {
+                    var buscarProduto = new ProdutoModel().Listar().Where(produto => produto.descricao == pedido.descricao_produto).FirstOrDefault();
+
+                    if (buscarProduto.categoria == "Bebidas" || buscarProduto.categoria == "Bebidas Alcoólicas")
+                    {
+                        ltPedidos.Remove(pedido);
+                    }
+                }
+
                 return View("PedidosEmAndamento",ltPedidos);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw;
             }

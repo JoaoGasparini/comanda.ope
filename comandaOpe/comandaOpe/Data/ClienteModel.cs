@@ -1,6 +1,8 @@
-﻿namespace comandaOpe.Data.Models
+﻿using comandaOpe.Data.Models;
+
+namespace comandaOpe.Data
 {
-    public class ClienteModel :BaseModel<Cliente>
+    public class ClienteModel : BaseModel<Cliente>
     {
     }
 }

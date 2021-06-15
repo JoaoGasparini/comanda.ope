@@ -1,4 +1,4 @@
-﻿@model List<comandaOpe.Data.Models.Produto>
+﻿@model List<IGrouping<string, comandaOpe.Data.Models.Pedido>>
 
 <head>
     <style>
@@ -15,16 +15,16 @@
             border-right: 1px solid #dee2e6;
         }
 
-        .sidenav a {
-            padding: 6px 8px 6px 16px;
-            text-decoration: none;
-            color: #818181;
-            display: block;
-        }
+            .sidenav a {
+                padding: 6px 8px 6px 16px;
+                text-decoration: none;
+                color: #818181;
+                display: block;
+            }
 
-        .sidenav a:hover {
-            color: #f1f1f1;
-        }
+                .sidenav a:hover {
+                    color: #f1f1f1;
+                }
 
         .main {
             margin-top: 20px;
@@ -45,61 +45,33 @@
 </div>
 
 <div class="main">
-    @if (TempData["Falha"] != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @TempData["Falha"]
+    <h2 class="mb-3">Pedidos frequentes</h2>
+    <form>
+        <div>
+            <button class="btn btn-primary" type="submit" asp-action="ListarPedidosFrequentesMes" asp-controller="Financeiro">Mes</button>
+            <button class="btn btn-primary" type="submit" asp-action="ListarPedidosFrequentesSemana" asp-controller="Financeiro">7 dias</button>
+            <button class="btn btn-primary" type="submit" asp-action="ListarPedidosFrequentesDia" asp-controller="Financeiro">1 dia</button>
         </div>
-    }
-    @if (TempData["Sucesso"] != null)
+    </form>
+
+    @if (Model != null)
     {
-        <div class="alert alert-success">
-            @TempData["Sucesso"]
-        </div>
-    }
-
-    <h2 class="align-items-center mb-3">Produtos</h2>
-    <table class="table table-striped">
-        <form method="post" asp-action="FormInserirProduto" asp-controller="Produto">
-            <button class="btn btn-success" type="submit"> <i class="fas fa-plus-circle"></i> </button>
-        </form>
-
-        <thead>
-            <tr>
-                <th scope="col">Editar</th>
-                <th scope="col">Excluir</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Preço</th>
-                <th scope="col">Categoria</th>
-            </tr>
-        </thead>
-
-        @if (Model != null)
-        {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Produto</th>
+                    <th scope="col">Quantidade</th>
+                </tr>
+            </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var gpPedido in Model)
                 {
                     <tr>
-                        <td>
-                            <form method="post" asp-action="FormEditarProduto" asp-controller="Produto">
-                                <input name="id_produto" id="id_produto" hidden="hidden" value="@item.id" />
-                                <button class="btn btn-primary" type="submit"> <i class="fas fa-edit"></i> </button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post" asp-action="RemoverProduto" asp-controller="Produto">
-                                <input name="id_produto" id="id_produto" hidden="hidden" value="@item.id" />
-                                <button class="btn btn-danger" type="submit"> <i class="fas fa-trash-alt"></i> </button>
-                            </form>
-                        </td>
-
-                        <td>@item.descricao</td>
-                        <td>@item.preco</td>
-                        <td>@item.categoria</td>
-
+                        <td>@gpPedido.Key</td>
+                        <td>@gpPedido.Count()</td>
                     </tr>
                 }
             </tbody>
-        }
-    </table>
+        </table>
+    }
 </div>
