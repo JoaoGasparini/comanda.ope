@@ -14,12 +14,12 @@ namespace comandaOpe.Data
             builder.AddJsonFile("appsettings.json", optional: false);
 
             var configuration = builder.Build();
-            connectionString = configuration.GetConnectionString("SistemaComandaConnection").ToString();
+            connectionString = configuration.GetConnectionString("ConnectionString").ToString();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder)
         {
-            dbContextOptionsBuilder.UseNpgsql(connectionString);
+            dbContextOptionsBuilder.UseSqlServer(connectionString);
         }
 
         //TABELAS DE MAPEAMENTO
